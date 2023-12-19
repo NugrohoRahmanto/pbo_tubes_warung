@@ -8,40 +8,31 @@ package tubes_warung;
  *
  * @author anand
  */
-public class Makanan extends Kategori{
-    private String namaMakanan;
-    private int stokMakanan;
-    private int hargaMakanan;
+public class Makanan extends Produk implements Kategori{
+    private String Kategori;
+
+    public Makanan(String Kategori, String nama, int harga, int stok) {
+        super(nama, harga, stok);
+        this.Kategori = Kategori;
+    }
+
+    public String getKategori() {
+        return Kategori;
+    }
+
+    public void setKategori(String Kategori) {
+        this.Kategori = Kategori;
+    }
     
-    public Makanan(String kategori, String makanan, int stok, int harga){
-        super(kategori);
-        this.namaMakanan = makanan;
-        this.stokMakanan = stok;
-        this.hargaMakanan = harga;
+    @Override
+    public void kurangiStok(int jum) {
+        this.stok = this.stok-jum;
     }
 
-    public String getNama() {
-        return namaMakanan;
-    }
-
-    public void setNama(String nama) {
-        this.namaMakanan = nama;
-    }
-
-    public int getStok() {
-        return stokMakanan;
-    }
-
-    public void setStok(int stok) {
-        this.stokMakanan = stok;
-    }
-
-    public int getHarga() {
-        return hargaMakanan;
-    }
-
-    public void setHarga(int harga) {
-        this.hargaMakanan = harga;
+    @Override
+    public void tambahKategori(String kat) {
+        
+        this.Kategori =kat;
     }
     
     
