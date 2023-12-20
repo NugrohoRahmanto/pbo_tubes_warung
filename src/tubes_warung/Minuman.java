@@ -9,8 +9,8 @@ package tubes_warung;
  * @author anand
  */
 public class Minuman extends Produk{
-    public Minuman( String nama, int harga, int stok) {
-        super(nama, harga, stok);
+    public Minuman( int id, String nama, int harga, int stok) {
+        super(id, nama, harga, stok);
        
     }
     
