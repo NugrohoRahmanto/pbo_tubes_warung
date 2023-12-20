@@ -4,18 +4,66 @@
  */
 package tubes_warung;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 /**
  *
  * @author anand
  */
 public class Kasir extends javax.swing.JDialog {
-
+    private DefaultListModel<String> listMak = new DefaultListModel<>();
+    private DefaultListModel<String> listMin = new DefaultListModel<>();
+    private DefaultListModel<String> listPesan = new DefaultListModel<>();
+    ArrayList<Makanan> ArrMakanan = new ArrayList<>();
+    ArrayList<Minuman> ArrMinuman = new ArrayList<>();
+    int id_book_global = -1;
     /**
      * Creates new form Kasir
      */
     public Kasir(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        ListMakanan.setModel(listMak);
+        ListMinuman.setModel(listMin);
+        ListPesanan.setModel(listPesan);
+        AddMakananButton.setVisible(false);
+        AddMinumanButton.setVisible(false);
+        BayarButton.setVisible(false);
+        
+    }
+    
+    public void Refresh(){
+        listMak.clear();
+        listMin.clear();
+        try {
+            Database db;
+            db = new Database();
+            String sql = "select * from foods";
+            ResultSet rs = db.getData(sql);
+            while(rs.next()){
+                listMak.addElement(rs.getString("namaMakanan"));
+                Makanan ma = new Makanan(rs.getInt("id"), rs.getString("kategori"), rs.getString("namaMakanan"), rs.getInt("hargaMakanan"), rs.getInt("stokMakanan"));
+                ArrMakanan.add(ma);
+            }  
+            sql = "select * from drinks";
+            rs = db.getData(sql);
+            while(rs.next()){
+                listMin.addElement(rs.getString("namaMinuman"));
+                Minuman mi = new Minuman(rs.getInt("id"), rs.getString("namaMinuman"), rs.getInt("hargaMinuman"), rs.getInt("stokMinuman"));
+                ArrMinuman.add(mi);
+            }            
+        }catch (SQLException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -27,35 +75,36 @@ public class Kasir extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jComboBox1 = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        ListMinuman = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        ListMakanan = new javax.swing.JList<>();
         Customer = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         AddMakananButton = new javax.swing.JButton();
         AddMinumanButton = new javax.swing.JButton();
-        ReviewMakananButton = new javax.swing.JButton();
-        PesananButton = new javax.swing.JButton();
+        BayarButton = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        ListPesanan = new javax.swing.JList<>();
+        submitButton = new javax.swing.JButton();
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(ListMinuman);
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        jScrollPane2.setViewportView(ListMakanan);
+
+        Customer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CustomerActionPerformed(evt);
+            }
         });
-        jScrollPane2.setViewportView(jList2);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel1.setText("List Makanan");
@@ -66,74 +115,101 @@ public class Kasir extends javax.swing.JDialog {
         jLabel3.setText("Nama Pembeli");
 
         AddMakananButton.setText("Tambah Makanan");
+        AddMakananButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddMakananButtonActionPerformed(evt);
+            }
+        });
 
         AddMinumanButton.setText("Tambah Minuman");
+        AddMinumanButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddMinumanButtonActionPerformed(evt);
+            }
+        });
 
-        ReviewMakananButton.setText("Lihat Pesanan");
+        BayarButton.setText("Bayar");
 
-        PesananButton.setText("Bayar");
+        ListPesanan.setBackground(new java.awt.Color(204, 204, 204));
+        ListPesanan.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jScrollPane3.setViewportView(ListPesanan);
+
+        submitButton.setText("Submit");
+        submitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Customer)
-                            .addComponent(AddMakananButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(AddMinumanButton, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-                            .addComponent(ReviewMakananButton, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-                            .addComponent(PesananButton, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(submitButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Customer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AddMakananButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AddMinumanButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BayarButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(34, 34, 34))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
+                        .addGap(49, 49, 49)
                         .addComponent(jLabel1)
-                        .addGap(96, 96, 96)
-                        .addComponent(jLabel3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(71, 71, 71)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(40, 40, 40)))
-                .addContainerGap())
+                        .addGap(51, 51, 51))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(102, 102, 102))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel1))
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(Customer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(26, 26, 26)
-                            .addComponent(AddMakananButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(AddMinumanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(ReviewMakananButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(PesananButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1))
+                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(Customer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(submitButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(AddMakananButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(AddMinumanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(BayarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+                .addGap(22, 22, 22))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,6 +218,98 @@ public class Kasir extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void AddMakananButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMakananButtonActionPerformed
+        // TODO add your handling code here:
+        int indeks = ListMakanan.getSelectedIndex();
+        Makanan ma = ArrMakanan.get(indeks);
+        String namaM = ma.getNama();
+        Database db;
+        int idMakanan = 0;
+        try {
+            db = new Database();
+            String sql = "select * from foods where namaMakanan = '"+namaM+"'";
+            ResultSet rs = db.getData(sql);
+            while(rs.next()){
+                idMakanan = rs.getInt("id");
+            }              
+        }catch (SQLException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            db = new Database();
+            String sql = "insert into chooses (id_book, id_makanan, jumlah) values ('"+id_book_global+"','"+idMakanan+"','1000')";
+            db.query(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        listPesan.addElement(namaM);     
+    }//GEN-LAST:event_AddMakananButtonActionPerformed
+
+    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
+        // TODO add your handling code here:
+        String namaCust = Customer.getText();
+        Database db;
+        try {
+            db = new Database();
+            String sql = "insert into bookings (nama, hargatotal) values ('"+namaCust+"','0')";
+            db.query(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        submitButton.setVisible(false);
+        this.Refresh();
+        AddMakananButton.setVisible(true);
+        AddMinumanButton.setVisible(true);
+        BayarButton.setVisible(true);
+        
+        try {
+            db = new Database();
+            String sql = "select * from bookings where nama = '"+namaCust+"'";
+            ResultSet rs = db.getData(sql);
+            while(rs.next()){
+                id_book_global= rs.getInt("id");
+            }              
+        }catch (SQLException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_submitButtonActionPerformed
+
+    private void CustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CustomerActionPerformed
+
+    private void AddMinumanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddMinumanButtonActionPerformed
+        // TODO add your handling code here:
+        int indeks = ListMinuman.getSelectedIndex();
+        Minuman mi = ArrMinuman.get(indeks);
+        String namaM = mi.getNama();
+        Database db;
+        int idMinuman = 0;
+        try {
+            db = new Database();
+            String sql = "select * from drinks where namaMinuman = '"+namaM+"'";
+            ResultSet rs = db.getData(sql);
+            while(rs.next()){
+                idMinuman = rs.getInt("id");
+            }              
+        }catch (SQLException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            db = new Database();
+            String sql = "insert into chooses (id_book, id_minuman, jumlah) values ('"+id_book_global+"','"+idMinuman+"','1000')";
+            db.query(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        listPesan.addElement(namaM);
+    }//GEN-LAST:event_AddMinumanButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -188,16 +356,19 @@ public class Kasir extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddMakananButton;
     private javax.swing.JButton AddMinumanButton;
+    private javax.swing.JButton BayarButton;
     private javax.swing.JTextField Customer;
-    private javax.swing.JButton PesananButton;
-    private javax.swing.JButton ReviewMakananButton;
+    private javax.swing.JList<String> ListMakanan;
+    private javax.swing.JList<String> ListMinuman;
+    private javax.swing.JList<String> ListPesanan;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JButton submitButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -9,19 +9,15 @@ package tubes_warung;
  *
  * @author Nugee
  */
-public abstract class Produk {
+public class Pesanan {
     private int id;
     private String nama;
-    private int harga;
-    int stok;
-    
-    public abstract void kurangiStok(int jum);
+    private int hargaTotal;
 
-    public Produk(int id, String nama, int harga, int stok) {
+    public Pesanan(int id, String nama, int hargaTotal) {
         this.id = id;
         this.nama = nama;
-        this.harga = harga;
-        this.stok = stok;
+        this.hargaTotal = hargaTotal;
     }
 
     public int getId() {
@@ -32,15 +28,8 @@ public abstract class Produk {
         return nama;
     }
 
-    public int getHarga() {
-        return harga;
+    public int getHargaTotal() {
+        return hargaTotal;
     }
-
-    public int getStok() {
-        return stok;
-    }
-
-    
-    
     
 }

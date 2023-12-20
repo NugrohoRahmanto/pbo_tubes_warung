@@ -11,8 +11,8 @@ package tubes_warung;
 public class Makanan extends Produk implements Kategori{
     private String Kategori;
 
-    public Makanan(String Kategori, String nama, int harga, int stok) {
-        super(nama, harga, stok);
+    public Makanan(int id,String Kategori, String nama, int harga, int stok) {
+        super(id, nama, harga, stok);
         this.Kategori = Kategori;
     }
 
