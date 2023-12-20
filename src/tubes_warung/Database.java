@@ -27,13 +27,11 @@ public class Database {
     
     public Database() throws SQLException{
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(DB_URL,DB_USER,DB_PASS);
             stmt = conn.createStatement();
         }catch (SQLException e){
             JOptionPane.showMessageDialog(null,""+e.getMessage(),"Connection Error",JOptionPane.WARNING_MESSAGE);
-        } catch (ClassNotFoundException err) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, err);
         }
     }
     
@@ -64,4 +62,5 @@ public class Database {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, err);
         }
     }
+    
 }

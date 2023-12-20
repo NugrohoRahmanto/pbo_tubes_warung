@@ -8,40 +8,17 @@ package tubes_warung;
  *
  * @author anand
  */
-public class Minuman {
-    private String namaMinuman;
-    private int stokMinuman;
-    private int hargaMinuman;
-
-    public Minuman(String namaMinuman, int stokMinuman, int hargaMinuman) {
-        this.namaMinuman = namaMinuman;
-        this.stokMinuman = stokMinuman;
-        this.hargaMinuman = hargaMinuman;
+public class Minuman extends Produk{
+    public Minuman( int id, String nama, int harga, int stok) {
+        super(id, nama, harga, stok);
+       
     }
-
-    public String getNamaMinuman() {
-        return namaMinuman;
+    
+    @Override
+    public void kurangiStok(int jum) {
+        this.stok = this.stok-jum;
     }
-
-    public void setNamaMinuman(String namaMinuman) {
-        this.namaMinuman = namaMinuman;
-    }
-
-    public int getStokMinuman() {
-        return stokMinuman;
-    }
-
-    public void setStokMinuman(int stokMinuman) {
-        this.stokMinuman = stokMinuman;
-    }
-
-    public int getHargaMinuman() {
-        return hargaMinuman;
-    }
-
-    public void setHargaMinuman(int hargaMinuman) {
-        this.hargaMinuman = hargaMinuman;
-    }
+    
     
     
 }
