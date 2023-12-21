@@ -25,9 +25,9 @@ public class Database {
     static Statement stmt;
     static ResultSet rs;
     
-    public Database() throws SQLException{
+    public Database() throws SQLException, ClassNotFoundException{
         try{
-//            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(DB_URL,DB_USER,DB_PASS);
             stmt = conn.createStatement();
         }catch (SQLException e){
