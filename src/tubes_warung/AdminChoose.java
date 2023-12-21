@@ -4,6 +4,9 @@
  */
 package tubes_warung;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -99,7 +102,14 @@ public class AdminChoose extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        DialogKasir kasir = new DialogKasir(parentFrame, true);
+        DialogKasir kasir = null;
+        try {
+            kasir = new DialogKasir(parentFrame, true);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminChoose.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdminChoose.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
         kasir.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed

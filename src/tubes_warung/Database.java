@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -43,6 +44,28 @@ public class Database {
             JOptionPane.WARNING_MESSAGE);
         }
         return rs; 
+    }
+    
+    public int getQueryId(String SQLString, boolean returnGeneratedKeys) {
+        int generatedId = 0;
+        try {
+            if (returnGeneratedKeys) {
+                PreparedStatement statement = conn.prepareStatement(SQLString, Statement.RETURN_GENERATED_KEYS);
+                statement.executeUpdate();
+
+                ResultSet generatedKeys = statement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    generatedId = generatedKeys.getInt(1); // Retrieve the auto-generated ID
+                }
+                generatedKeys.close();
+                statement.close();
+            } else {
+                stmt.executeUpdate(SQLString);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Communication Error", JOptionPane.WARNING_MESSAGE);
+        }
+        return generatedId;
     }
     
     public void query (String SQLString){
