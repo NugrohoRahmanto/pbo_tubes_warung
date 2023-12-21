@@ -4,6 +4,9 @@
  */
 package tubes_warung;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author anand
@@ -41,6 +44,11 @@ public class AdminChoose extends javax.swing.JDialog {
         jButton1.setText("ADMIN");
 
         jButton2.setText("KASIR");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("MASUK SEBAGAI");
 
@@ -87,6 +95,14 @@ public class AdminChoose extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        DialogKasir kasir = new DialogKasir(parentFrame, true);
+        this.dispose();
+        kasir.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
