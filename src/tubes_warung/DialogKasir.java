@@ -19,6 +19,8 @@ import java.sql.Statement;
  */
 public class DialogKasir extends javax.swing.JDialog {
     public int tempId;
+    public int id_makanan;
+    public int id_minuman;
     private ArrayList<Makanan> makan;
     private ArrayList<Minuman> minum;
     private Object selectedDataMakan;
@@ -449,9 +451,17 @@ public class DialogKasir extends javax.swing.JDialog {
         try {
             Database db = new Database();
             if (selectedDataMakan != null){
+                String sql;
+                sql  = "SELECT `id` FROM `foods` WHERE namaMakanan = '"+selectedDataMakan+"';";
+                ResultSet rs = db.getData(sql);
+                
+                while(rs.next()){
+                    id_makanan = rs.getInt("id");
+                }
+                
                 int jumlah = Integer.parseInt(jTextField2.getText());
 
-                String sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES ("+tempId+","+selectedDataMakan+","+jumlah+")";
+                sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES ("+tempId+","+id_makanan+","+jumlah+")";
                 db.query(sql);
 
                 jTextField2.setText("");
@@ -471,9 +481,16 @@ public class DialogKasir extends javax.swing.JDialog {
         try {
             Database db = new Database();
             if (selectedDataMinum != null){
+                String sql;
+                sql  = "SELECT `id` FROM `drinks` WHERE namaMinuman = '"+selectedDataMinum+"';";
+                ResultSet rs = db.getData(sql);
+                
+                while(rs.next()){
+                    id_makanan = rs.getInt("id");
+                }
                 int jumlah = Integer.parseInt(jTextField1.getText());
 
-                String sql = "INSERT INTO chooses (id_book, id_minuman, jumlah) VALUES ("+tempId+","+selectedDataMinum+","+jumlah+")";
+                sql = "INSERT INTO chooses (id_book, id_minuman, jumlah) VALUES ("+tempId+","+id_minuman+","+jumlah+")";
                 db.query(sql);
 
                 jTextField1.setText("");
@@ -491,7 +508,7 @@ public class DialogKasir extends javax.swing.JDialog {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         int selectedMakan = jTable1.getSelectedRow();
         if (selectedMakan != -1) {
-            selectedDataMakan = jTable1.getValueAt(selectedMakan, 0);
+            selectedDataMakan = jTable1.getValueAt(selectedMakan,0);
             System.out.println("Selected Makan: " + selectedDataMakan);
         }
     }//GEN-LAST:event_jTable1MouseClicked
@@ -512,11 +529,15 @@ public class DialogKasir extends javax.swing.JDialog {
             Pesanan pesan = new Pesanan(namaPemesan, 0);
 
             String sql = "INSERT INTO bookings (nama, hargaTotal) VALUES ('"+pesan.getNama()+"','"+pesan.getHargaTotal()+"')";
-            tempId = db.getQueryId(sql, true);
+            db.query(sql);
             
-        } catch (SQLException ex) {
-            Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+            sql = "SELECT MAX(id) FROM `bookings`";
+            ResultSet rs = db.getData(sql);
+            while(rs.next()){
+                tempId= rs.getInt("MAX(id)");
+            }
+            
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
         }
         

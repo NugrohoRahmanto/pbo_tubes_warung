@@ -28,7 +28,7 @@ public class Database {
     
     public Database() throws SQLException, ClassNotFoundException{
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(DB_URL,DB_USER,DB_PASS);
             stmt = conn.createStatement();
         }catch (SQLException e){
@@ -84,6 +84,10 @@ public class Database {
         } catch (SQLException err){
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, err);
         }
+    }
+
+    ResultSet getData(String sql, boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
