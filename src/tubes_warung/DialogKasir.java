@@ -98,27 +98,28 @@ public class DialogKasir extends javax.swing.JDialog {
         try {
         Database db = new Database();
 
-        String sql = "SELECT c.id_makanan, f.nama AS NamaProduk, f.harga AS Harga Produk, c.jumlah AS Banyaknya, (f.harga * c.jumlah) AS Jumlah Harga " +
-                    "FROM chooses c " +
-                    "JOIN foods f ON c.id_makanan = f.id " +
-                    "WHERE c.id_book = " + tempId + " " + // Ganti tempId dengan nilai yang sesuai
-                    "UNION ALL " +
-                    "SELECT c.id_minuman, d.nama AS NamaProduk, d.harga AS 'Harga Produk', c.jumlah AS Banyaknya, (d.harga * c.jumlah) AS Jumlah Harga " +
-                    "FROM chooses c " +
-                    "JOIN drinks d ON c.id_minuman = d.id " +
-                    "WHERE c.id_book = " + tempId; // Ganti tempId dengan nilai yang sesuai
+//        String sql = "SELECT c.id_makanan, f.nama AS NamaProduk, f.harga AS Harga Produk, c.jumlah AS Banyaknya, (f.harga * c.jumlah) AS Jumlah Harga " +
+//                    "FROM chooses c " +
+//                    "JOIN foods f ON c.id_makanan = f.id " +
+//                    "WHERE c.id_book = " + tempId + " " + // Ganti tempId dengan nilai yang sesuai
+//                    "UNION ALL " +
+//                    "SELECT c.id_minuman, d.nama AS NamaProduk, d.harga AS 'Harga Produk', c.jumlah AS Banyaknya, (d.harga * c.jumlah) AS Jumlah Harga " +
+//                    "FROM chooses c " +
+//                    "JOIN drinks d ON c.id_minuman = d.id " +
+//                    "WHERE c.id_book = " + tempId; // Ganti tempId dengan nilai yang sesuai
 
+        String sql = "SELECT nama, namaMakanan, jumlah, hargaMakanan from chooses join bookings on bookings.id = chooses.id_book JOIN foods on foods.id = chooses.id_makanan where bookings.id = "+tempId+";";
         ResultSet rs = db.getData(sql);
-
+        int jumlahHarga=0;
         DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
         model.setRowCount(0);
 
         while (rs.next()) {
-            String namaProduk = rs.getString("NamaProduk");
-            int hargaProduk = rs.getInt("Harga Produk");
-            int banyaknya = rs.getInt("Banyaknya");
-            int jumlahHarga = rs.getInt("Jumlah Harga");
-
+            String namaProduk = rs.getString("namaMakanan");
+            int hargaProduk = rs.getInt("hargaMakanan");
+            int banyaknya = rs.getInt("jumlah");
+//            int jumlahHarga = rs.getInt("Jumlah Harga");
+            jumlahHarga = hargaProduk* banyaknya;
             model.addRow(new Object[]{namaProduk, hargaProduk, banyaknya, jumlahHarga});
         }
 
