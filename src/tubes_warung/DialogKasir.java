@@ -460,53 +460,75 @@ public class DialogKasir extends javax.swing.JDialog {
         try {
             Database db = new Database();
             if (selectedDataMakan != null){
-                String sql;
-                sql  = "SELECT `id` FROM `foods` WHERE namaMakanan = '"+selectedDataMakan+"';";
+                int id_makanan = 0;
+                String sql = "SELECT `id` FROM `foods` WHERE namaMakanan = '" + selectedDataMakan + "';";
                 ResultSet rs = db.getData(sql);
-                
-                while(rs.next()){
+
+                while (rs.next()) {
                     id_makanan = rs.getInt("id");
                 }
                 
                 int jumlah = Integer.parseInt(jTextField2.getText());
 
-                sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES ("+tempId+","+id_makanan+","+jumlah+")";
-                db.query(sql);
+                sql = "SELECT * FROM chooses WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
+                ResultSet existingData = db.getData(sql);
+                
+                if (existingData.next()) {
+                    int existingJumlah = existingData.getInt("jumlah");
+                    jumlah += existingJumlah;
+
+                    sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
+                    db.query(sql);
+                } else {
+                    sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES (" + tempId + "," + id_makanan + "," + jumlah + ")";
+                    db.query(sql);
+                }
 
                 jTextField2.setText("");
                 this.loadDataPesanan();
-            }else{
-                JOptionPane.showMessageDialog(null,"silahkan pilih makanan..","Error system",JOptionPane.WARNING_MESSAGE);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
-        }  
+                    }else{
+                        JOptionPane.showMessageDialog(null,"silahkan pilih makanan..","Error system",JOptionPane.WARNING_MESSAGE);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
+                }  
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try {
             Database db = new Database();
-            if (selectedDataMinum != null){
-                String sql;
-                sql  = "SELECT `id` FROM `drinks` WHERE namaMinuman = '"+selectedDataMinum+"';";
+            if (selectedDataMinum != null) {
+                int id_minuman = 0;
+                String sql = "SELECT `id` FROM `drinks` WHERE namaMinuman = '" + selectedDataMinum + "';";
                 ResultSet rs = db.getData(sql);
-                
-                while(rs.next()){
+
+                while (rs.next()) {
                     id_minuman = rs.getInt("id");
                 }
-                
+
                 int jumlah = Integer.parseInt(jTextField1.getText());
-                
-                sql = "INSERT INTO chooses (id_book, id_minuman, jumlah) VALUES ("+tempId+","+id_minuman+","+jumlah+")";
-                db.query(sql);
+
+                sql = "SELECT * FROM chooses WHERE id_book = " + tempId + " AND id_minuman = " + id_minuman + ";";
+                ResultSet existingData = db.getData(sql);
+
+                if (existingData.next()) {
+                    int existingJumlah = existingData.getInt("jumlah");
+                    jumlah += existingJumlah;
+
+                    sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_minuman = " + id_minuman + ";";
+                    db.query(sql);
+                } else {
+                    sql = "INSERT INTO chooses (id_book, id_minuman, jumlah) VALUES (" + tempId + "," + id_minuman + "," + jumlah + ")";
+                    db.query(sql);
+                }
 
                 jTextField1.setText("");
                 this.loadDataPesanan();
-            }else{
-                JOptionPane.showMessageDialog(null,"silahkan pilih minuman..","Error system",JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Silahkan pilih minuman..", "Error system", JOptionPane.WARNING_MESSAGE);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
