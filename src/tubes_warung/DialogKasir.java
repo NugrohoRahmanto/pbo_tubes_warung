@@ -96,38 +96,46 @@ public class DialogKasir extends javax.swing.JDialog {
     
     public final void loadDataPesanan() throws SQLException, ClassNotFoundException{
         try {
-        Database db = new Database();
+            Database db = new Database();
 
-//        String sql = "SELECT c.id_makanan, f.nama AS NamaProduk, f.harga AS Harga Produk, c.jumlah AS Banyaknya, (f.harga * c.jumlah) AS Jumlah Harga " +
-//                    "FROM chooses c " +
-//                    "JOIN foods f ON c.id_makanan = f.id " +
-//                    "WHERE c.id_book = " + tempId + " " + // Ganti tempId dengan nilai yang sesuai
-//                    "UNION ALL " +
-//                    "SELECT c.id_minuman, d.nama AS NamaProduk, d.harga AS 'Harga Produk', c.jumlah AS Banyaknya, (d.harga * c.jumlah) AS Jumlah Harga " +
-//                    "FROM chooses c " +
-//                    "JOIN drinks d ON c.id_minuman = d.id " +
-//                    "WHERE c.id_book = " + tempId; // Ganti tempId dengan nilai yang sesuai
+            String sql = "SELECT chooses.id, chooses.id_book, chooses.id_makanan, chooses.id_minuman, " +
+                         "foods.namaMakanan AS nama_makanan, foods.hargaMakanan AS harga_makanan, " +
+                         "drinks.hargaMinuman AS harga_minuman, drinks.namaMinuman AS nama_minuman, " +
+                         "chooses.jumlah " +
+                         "FROM chooses " +
+                         "LEFT JOIN foods ON chooses.id_makanan = foods.id " +
+                         "LEFT JOIN drinks ON chooses.id_minuman = drinks.id " +
+                         "WHERE chooses.id_book = " + tempId + ";";
 
-        String sql = "SELECT nama, namaMakanan, jumlah, hargaMakanan from chooses join bookings on bookings.id = chooses.id_book JOIN foods on foods.id = chooses.id_makanan where bookings.id = "+tempId+";";
-        ResultSet rs = db.getData(sql);
-        int jumlahHarga=0;
-        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
-        model.setRowCount(0);
+            ResultSet rs = db.getData(sql);
+            DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+            model.setRowCount(0);
 
-        while (rs.next()) {
-            String namaProduk = rs.getString("namaMakanan");
-            int hargaProduk = rs.getInt("hargaMakanan");
-            int banyaknya = rs.getInt("jumlah");
-//            int jumlahHarga = rs.getInt("Jumlah Harga");
-            jumlahHarga = hargaProduk* banyaknya;
-            model.addRow(new Object[]{namaProduk, hargaProduk, banyaknya, jumlahHarga});
+            while (rs.next()) {
+                int idMakanan = rs.getInt("id_makanan");
+                String namaProduk;
+                int hargaProduk, banyaknya;
+
+                if (rs.wasNull() || idMakanan == 0) {
+                    namaProduk = rs.getString("nama_minuman");
+                    hargaProduk = rs.getInt("harga_minuman");
+                } else {
+                    namaProduk = rs.getString("nama_makanan");
+                    hargaProduk = rs.getInt("harga_makanan");
+                }
+
+                banyaknya = rs.getInt("jumlah");
+                int jumlahHarga = hargaProduk * banyaknya;
+
+                model.addRow(new Object[]{namaProduk, hargaProduk, banyaknya, jumlahHarga});
+            }
+
+            db.close();
+
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        db.close(); // Tutup koneksi database setelah selesai
-
-    } catch (SQLException | ClassNotFoundException ex) {
-        Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
-    }
     }
 
     /**
@@ -487,10 +495,11 @@ public class DialogKasir extends javax.swing.JDialog {
                 ResultSet rs = db.getData(sql);
                 
                 while(rs.next()){
-                    id_makanan = rs.getInt("id");
+                    id_minuman = rs.getInt("id");
                 }
+                
                 int jumlah = Integer.parseInt(jTextField1.getText());
-
+                
                 sql = "INSERT INTO chooses (id_book, id_minuman, jumlah) VALUES ("+tempId+","+id_minuman+","+jumlah+")";
                 db.query(sql);
 
@@ -519,6 +528,7 @@ public class DialogKasir extends javax.swing.JDialog {
         int selectedMinum = jTable2.getSelectedRow();
         if (selectedMinum != -1){
             selectedDataMinum = jTable2.getValueAt(selectedMinum, 0);
+            System.out.println("Selected Minum: " + selectedDataMinum);
         }
         
     }//GEN-LAST:event_jTable2MouseClicked
