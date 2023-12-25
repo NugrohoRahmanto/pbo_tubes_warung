@@ -38,7 +38,8 @@ public class Database {
     
     public ResultSet getData(String SQLString){
         try{
-            rs = stmt.executeQuery(SQLString);
+            PreparedStatement preparedStatement = conn.prepareStatement(SQLString);
+            rs = preparedStatement.executeQuery();
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null,"Error :"+e.getMessage(),"Communication Error",
             JOptionPane.WARNING_MESSAGE);

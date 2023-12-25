@@ -18,6 +18,8 @@ import java.sql.Statement;
  * @author anand
  */
 public class DialogKasir extends javax.swing.JDialog {
+    public int totHargaPesanan;
+    public int deleteIdPesanan;
     public int tempId;
     public int id_makanan;
     public int id_minuman;
@@ -25,6 +27,7 @@ public class DialogKasir extends javax.swing.JDialog {
     private ArrayList<Minuman> minum;
     private Object selectedDataMakan;
     private Object selectedDataMinum;
+    private Object selectedDataPesanan;
     // private Makanan makan_selected;
     // private Minuman minum_selected;
     /**
@@ -97,7 +100,7 @@ public class DialogKasir extends javax.swing.JDialog {
     public final void loadDataPesanan() throws SQLException, ClassNotFoundException{
         try {
             Database db = new Database();
-
+            totHargaPesanan = 0;
             String sql = "SELECT chooses.id, chooses.id_book, chooses.id_makanan, chooses.id_minuman, " +
                          "foods.namaMakanan AS nama_makanan, foods.hargaMakanan AS harga_makanan, " +
                          "drinks.hargaMinuman AS harga_minuman, drinks.namaMinuman AS nama_minuman, " +
@@ -126,10 +129,11 @@ public class DialogKasir extends javax.swing.JDialog {
 
                 banyaknya = rs.getInt("jumlah");
                 int jumlahHarga = hargaProduk * banyaknya;
-
+                totHargaPesanan += jumlahHarga;
                 model.addRow(new Object[]{namaProduk, hargaProduk, banyaknya, jumlahHarga});
             }
 
+            jLabel9.setText(""+totHargaPesanan+"");
             db.close();
 
         } catch (SQLException | ClassNotFoundException ex) {
@@ -174,6 +178,7 @@ public class DialogKasir extends javax.swing.JDialog {
         jLabel10 = new javax.swing.JLabel();
         EDIT = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jTextField5 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -300,6 +305,11 @@ public class DialogKasir extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable3MouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(jTable3);
 
         jButton3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
@@ -320,13 +330,18 @@ public class DialogKasir extends javax.swing.JDialog {
 
         jLabel8.setText("KEMBALIAN      :");
 
-        jLabel9.setText("jLabel9");
-
         jLabel10.setText("jLabel10");
 
         EDIT.setText("EDIT");
 
         jButton6.setText("DELETE");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jTextField5.setText("jTextField5");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -334,12 +349,14 @@ public class DialogKasir extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(EDIT, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextField5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(EDIT, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -432,12 +449,12 @@ public class DialogKasir extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-                        .addComponent(EDIT, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(EDIT, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -456,7 +473,6 @@ public class DialogKasir extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
         try {
             Database db = new Database();
             if (selectedDataMakan != null){
@@ -486,18 +502,18 @@ public class DialogKasir extends javax.swing.JDialog {
 
                 jTextField2.setText("");
                 this.loadDataPesanan();
-                    }else{
-                        JOptionPane.showMessageDialog(null,"silahkan pilih makanan..","Error system",JOptionPane.WARNING_MESSAGE);
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
-                }  
+            }else{
+                JOptionPane.showMessageDialog(null,"silahkan pilih makanan..","Error system",JOptionPane.WARNING_MESSAGE);
+            }
+            db.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
+        }  
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         try {
             Database db = new Database();
             if (selectedDataMinum != null) {
@@ -530,6 +546,7 @@ public class DialogKasir extends javax.swing.JDialog {
             } else {
                 JOptionPane.showMessageDialog(null, "Silahkan pilih minuman..", "Error system", JOptionPane.WARNING_MESSAGE);
             }
+            db.close();
         } catch (SQLException ex) {
             Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -546,7 +563,6 @@ public class DialogKasir extends javax.swing.JDialog {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        // TODO add your handling code here:
         int selectedMinum = jTable2.getSelectedRow();
         if (selectedMinum != -1){
             selectedDataMinum = jTable2.getValueAt(selectedMinum, 0);
@@ -570,11 +586,62 @@ public class DialogKasir extends javax.swing.JDialog {
                 tempId= rs.getInt("MAX(id)");
             }
             
+            db.close();
+            
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+        int selectedPesanan = jTable3.getSelectedRow();
+        if (selectedPesanan != -1){
+            selectedDataPesanan = jTable3.getValueAt(selectedPesanan, 0);
+            System.out.println("Selected Pesan: " + selectedDataPesanan);
+        }
+    }//GEN-LAST:event_jTable3MouseClicked
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        try {
+            Database db = new Database();
+            int idMakan = 0, idMinum = 0;
+            
+            String selectedDataPesan = selectedDataPesanan.toString();
+
+            String sql1 = "SELECT `id` FROM `foods` WHERE namaMakanan = '"+selectedDataPesan+"'";
+            ResultSet rs1 = db.getData(sql1);
+
+            String sql2 = "SELECT `id` FROM `drinks` WHERE namaMinuman = '"+selectedDataPesan+"';";
+            ResultSet rs2 = db.getData(sql2);
+
+            while(rs1.next()){
+                idMakan= rs1.getInt("id");
+            }
+
+            while(rs2.next()){
+                idMinum= rs2.getInt("id");
+            }
+            
+            if(idMakan == 0){
+                deleteIdPesanan = idMinum;
+                String sql = "DELETE FROM chooses WHERE id_book = "+tempId+" AND id_minuman = "+ deleteIdPesanan +"";
+                db.query(sql);
+            }else{
+                deleteIdPesanan = idMakan;
+                String sql = "DELETE FROM chooses WHERE id_book = "+tempId+" AND id_makanan = "+ deleteIdPesanan +"";
+                db.query(sql);
+            }
+
+            rs1.close();
+            rs2.close();
+            db.close();
+            this.loadDataPesanan();
+            
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -651,5 +718,6 @@ public class DialogKasir extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }
