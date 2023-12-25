@@ -20,6 +20,7 @@ import java.sql.Statement;
 public class DialogKasir extends javax.swing.JDialog {
     public int totHargaPesanan;
     public int deleteIdPesanan;
+    public int editIdPesanan;
     public int tempId;
     public int id_makanan;
     public int id_minuman;
@@ -179,6 +180,7 @@ public class DialogKasir extends javax.swing.JDialog {
         EDIT = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jTextField5 = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -333,6 +335,11 @@ public class DialogKasir extends javax.swing.JDialog {
         jLabel10.setText("jLabel10");
 
         EDIT.setText("EDIT");
+        EDIT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EDITActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("DELETE");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -341,7 +348,7 @@ public class DialogKasir extends javax.swing.JDialog {
             }
         });
 
-        jTextField5.setText("jTextField5");
+        jLabel11.setText("Perubahan Qty :");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -351,7 +358,11 @@ public class DialogKasir extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextField5)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField5)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(EDIT, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -450,12 +461,16 @@ public class DialogKasir extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EDIT, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(EDIT, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -643,6 +658,56 @@ public class DialogKasir extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void EDITActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EDITActionPerformed
+        try {
+            Database db = new Database();
+            int idMakan = 0, idMinum = 0;
+            
+            int jumlah = Integer.parseInt(jTextField5.getText());
+            
+            if (selectedDataPesanan != null){
+                
+                String selectedDataPesan = selectedDataPesanan.toString();
+
+                String sql1 = "SELECT `id` FROM `foods` WHERE namaMakanan = '"+selectedDataPesan+"'";
+                ResultSet rs1 = db.getData(sql1);
+
+                String sql2 = "SELECT `id` FROM `drinks` WHERE namaMinuman = '"+selectedDataPesan+"';";
+                ResultSet rs2 = db.getData(sql2);
+
+                while(rs1.next()){
+                    idMakan= rs1.getInt("id");
+                }
+
+                while(rs2.next()){
+                    idMinum= rs2.getInt("id");
+                }
+
+                if(idMakan == 0){
+                    editIdPesanan = idMinum;
+                    String sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_minuman = " + editIdPesanan + "";
+                    db.query(sql);
+                }else{
+                    editIdPesanan = idMakan;
+                    String sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_makanan = " + editIdPesanan + "";
+                    db.query(sql);
+                }
+
+                rs1.close();
+                rs2.close();
+                jTextField5.setText("");
+                this.loadDataPesanan();
+            }else{
+                JOptionPane.showMessageDialog(null,"silahkan pilih makanan..","Error system",JOptionPane.WARNING_MESSAGE);
+            }
+            db.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_EDITActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -699,6 +764,7 @@ public class DialogKasir extends javax.swing.JDialog {
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
