@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,6 +22,10 @@ public class LoginForm extends javax.swing.JFrame {
      */
     public LoginForm() {
         initComponents();
+    }
+
+    LoginForm(JFrame parentFrame, boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -134,15 +139,18 @@ public class LoginForm extends javax.swing.JFrame {
             }
             System.out.println(roleAdmin);
             AdminChoose ac = new AdminChoose(this, true);
-            Kasir kas = new Kasir(this, true);
+            DialogKasir kas = new DialogKasir(this, true);
             
             try{
                if(roleAdmin.equals("Admin")){
-                    ac.setIdAdmin(idAdmin);
                     this.dispose();
+                    ac.setIdRoleLogin(idAdmin, roleAdmin);
+                    ac.setLocationRelativeTo(null);
                     ac.setVisible(true);
                 }else{
                     this.dispose();
+                    kas.setIdRoleLogin(idAdmin, roleAdmin);
+                    kas.setLocationRelativeTo(null);
                     kas.setVisible(true);
                 }
             }catch (Exception err){
@@ -152,6 +160,8 @@ public class LoginForm extends javax.swing.JFrame {
         } catch (SQLException err) {
             Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, err);
             JOptionPane.showMessageDialog(null,""+err.getMessage(),"Connection Error",JOptionPane.WARNING_MESSAGE);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
@@ -187,7 +197,9 @@ public class LoginForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginForm().setVisible(true);
+                LoginForm login = new LoginForm();
+                login.setLocationRelativeTo(null);
+                login.setVisible(true);
             }
         });
     }
