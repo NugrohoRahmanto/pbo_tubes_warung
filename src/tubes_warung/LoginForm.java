@@ -68,7 +68,7 @@ public class LoginForm extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(57, Short.MAX_VALUE)
+                .addContainerGap(65, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -137,7 +137,7 @@ public class LoginForm extends javax.swing.JFrame {
                 idAdmin = rs.getInt("id");
                 roleAdmin = rs.getString("role");
             }
-            System.out.println(roleAdmin);
+            
             AdminChoose ac = new AdminChoose(this, true);
             DialogKasir kas = new DialogKasir(this, true);
             

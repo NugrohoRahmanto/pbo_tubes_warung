@@ -612,7 +612,6 @@ public class DialogKasir extends javax.swing.JDialog {
             selectedDataMinum = jTable2.getValueAt(selectedMinum, 0);
             System.out.println("Selected Minum: " + selectedDataMinum);
         }
-        
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
