@@ -23,6 +23,9 @@ public class DialogKasir extends javax.swing.JDialog {
     public int totHargaPesanan;
     public int deleteIdPesanan;
     public int editIdPesanan;
+    public double diskonDesert;
+    public double diskonMainCourse;
+    public double diskonAppetizer;
     public int tempId;
     public int id_makanan;
     public int id_minuman;
@@ -42,11 +45,40 @@ public class DialogKasir extends javax.swing.JDialog {
      * @throws java.sql.SQLException
      * @throws java.lang.ClassNotFoundException
      */
+    
+    public void set_diskon() throws SQLException, ClassNotFoundException{
+        Database db = new Database();
+        String cariDiskonDesert = "SELECT * FROM discounts where discounts.namaKategori = 'Desert'";
+        String cariDiskonMainCourse = "SELECT * FROM discounts where discounts.namaKategori = 'MainCourse'";
+        String cariDiskonAppetizer = "SELECT * FROM discounts where discounts.namaKategori = 'Appetizer'";
+        ResultSet rs1 = db.getData(cariDiskonDesert);
+        ResultSet rs2 = db.getData(cariDiskonMainCourse);
+        ResultSet rs3 = db.getData(cariDiskonAppetizer);
+        makan = new ArrayList<>();
+        
+        try{
+            while (rs1.next()){
+                int diskon;
+                diskonDesert = (double) (100-rs1.getInt(3))/100;
+            }
+            while (rs2.next()){
+                int diskon;
+                diskonMainCourse = (double) (100-rs2.getInt(3))/100;
+            }
+            while (rs3.next()){
+                int diskon;
+                diskonAppetizer = (double) (100-rs3.getInt(3))/100;
+            }
+        }catch (SQLException err){
+            JOptionPane.showMessageDialog(null,""+err.getMessage(),"Connection Error",JOptionPane.WARNING_MESSAGE);
+        }
+    }
     public DialogKasir(java.awt.Frame parent, boolean modal) throws SQLException, ClassNotFoundException {
         super(parent, modal);
         initComponents();
         jLabel8.setVisible(false);
         jLabel10.setVisible(false);
+        set_diskon();
     }
     
     public void setIdRoleLogin(int idAdmin, String role){
@@ -68,7 +100,16 @@ public class DialogKasir extends javax.swing.JDialog {
         
         try{
             while (Database.rs.next()){
-                makan.add(new Makanan(Database.rs.getInt(1), Database.rs.getString(5), Database.rs.getString(2), Database.rs.getInt(4), Database.rs.getInt(3)));
+                String kat = Database.rs.getString(5);
+                if (kat.equals("Desert")){
+                    makan.add(new Makanan(Database.rs.getInt(1), Database.rs.getString(5), Database.rs.getString(2), (int) (Database.rs.getInt(4) * diskonDesert), Database.rs.getInt(3)));
+                }else if (kat.equals("Appetizer")){
+                    makan.add(new Makanan(Database.rs.getInt(1), Database.rs.getString(5), Database.rs.getString(2), (int) (Database.rs.getInt(4)* diskonAppetizer), Database.rs.getInt(3)));
+                }else{
+                    makan.add(new Makanan(Database.rs.getInt(1), Database.rs.getString(5), Database.rs.getString(2), (int) (Database.rs.getInt(4) * diskonMainCourse), Database.rs.getInt(3)));
+                }
+//                makan.add(new Makanan(Database.rs.getInt(1), Database.rs.getString(5), Database.rs.getString(2), Database.rs.getInt(4), Database.rs.getInt(3)));
+            
 
             }
             while (((DefaultTableModel)jTable1.getModel()).getRowCount()>0){
@@ -120,7 +161,7 @@ public class DialogKasir extends javax.swing.JDialog {
             String sql = "SELECT chooses.id, chooses.id_book, chooses.id_makanan, chooses.id_minuman, " +
                          "foods.namaMakanan AS nama_makanan, foods.hargaMakanan AS harga_makanan, " +
                          "drinks.hargaMinuman AS harga_minuman, drinks.namaMinuman AS nama_minuman, " +
-                         "chooses.jumlah " +
+                         "foods.kategori AS kategori, chooses.jumlah " +
                          "FROM chooses " +
                          "LEFT JOIN foods ON chooses.id_makanan = foods.id " +
                          "LEFT JOIN drinks ON chooses.id_minuman = drinks.id " +
@@ -132,7 +173,7 @@ public class DialogKasir extends javax.swing.JDialog {
 
             while (rs.next()) {
                 int idMakanan = rs.getInt("id_makanan");
-                String namaProduk;
+                String namaProduk,kategori;
                 int hargaProduk, banyaknya;
 
                 if (rs.wasNull() || idMakanan == 0) {
@@ -140,7 +181,15 @@ public class DialogKasir extends javax.swing.JDialog {
                     hargaProduk = rs.getInt("harga_minuman");
                 } else {
                     namaProduk = rs.getString("nama_makanan");
-                    hargaProduk = rs.getInt("harga_makanan");
+                    kategori = rs.getString("kategori");
+                    if(kategori.equals("Desert")){
+                        hargaProduk = (int) (rs.getInt("harga_makanan") * diskonDesert);
+                    }else if(kategori.equals("Appetizer")){
+                        hargaProduk = (int) (rs.getInt("harga_makanan")* diskonAppetizer);
+                    }else{
+                        hargaProduk = (int) (rs.getInt("harga_makanan")* diskonMainCourse);
+                    }
+//                    hargaProduk = rs.getInt("harga_makanan");
                 }
 
                 banyaknya = rs.getInt("jumlah");
@@ -746,6 +795,10 @@ public class DialogKasir extends javax.swing.JDialog {
         if (hasil < 0){
             JOptionPane.showMessageDialog(null,"Nominal pembayaran kurang..","Kasir",JOptionPane.WARNING_MESSAGE);
         }else{
+//            Database db = null;
+//            String sql = "UPDATE bookings SET hargaTotal = "+totPembayaran+" WHERE id = "+tempId+"";
+//            db.query(sql);
+            
             JOptionPane.showMessageDialog(null,"Kembalian : "+hasil+"","Kasir",JOptionPane.WARNING_MESSAGE);
             this.dispose();
             
