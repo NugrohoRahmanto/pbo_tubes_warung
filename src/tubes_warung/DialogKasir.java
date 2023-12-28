@@ -585,6 +585,7 @@ public class DialogKasir extends javax.swing.JDialog {
             Database db = new Database();
             if (selectedDataMakan != null){
                 int id_makanan = 0;
+                int stok_makanan = 0;
                 String sql = "SELECT `id` FROM `foods` WHERE namaMakanan = '" + selectedDataMakan + "';";
                 ResultSet rs = db.getData(sql);
 
@@ -597,19 +598,36 @@ public class DialogKasir extends javax.swing.JDialog {
                 sql = "SELECT * FROM chooses WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
                 ResultSet existingData = db.getData(sql);
                 
+                sql = "SELECT `stokMakanan` FROM `foods` WHERE namaMakanan = '" + selectedDataMakan + "';";
+                ResultSet rStok = db.getData(sql);
+                
+                while (rStok.next()) {
+                    stok_makanan = rs.getInt("stokMakanan");
+                }
+                
                 if (existingData.next()) {
                     int existingJumlah = existingData.getInt("jumlah");
                     jumlah += existingJumlah;
+                    
+                    stok_makanan = stok_makanan + existingJumlah - jumlah;
+                    sql = "UPDATE `foods` SET `stokMakanan` = `"+ stok_makanan +"` WHERE id = `"+ id_makanan +"`";
+                    db.query(sql);
 
                     sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
                     db.query(sql);
+                    
                 } else {
                     sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES (" + tempId + "," + id_makanan + "," + jumlah + ")";
                     db.query(sql);
+                    
+                    sql = "UPDATE `foods` SET `stokMakanan` = `"+ jumlah +"` WHERE id = `"+ id_makanan +"`";
+                    db.query(sql);
                 }
 
+                db.close();
                 jTextField2.setText("");
                 this.loadDataPesanan();
+                this.loadDataMakan();
             }else{
                 JOptionPane.showMessageDialog(null,"silahkan pilih makanan..","Error system",JOptionPane.WARNING_MESSAGE);
             }
@@ -626,6 +644,7 @@ public class DialogKasir extends javax.swing.JDialog {
             Database db = new Database();
             if (selectedDataMinum != null) {
                 int id_minuman = 0;
+                int stok_minuman = 0;
                 String sql = "SELECT `id` FROM `drinks` WHERE namaMinuman = '" + selectedDataMinum + "';";
                 ResultSet rs = db.getData(sql);
 
@@ -637,20 +656,37 @@ public class DialogKasir extends javax.swing.JDialog {
 
                 sql = "SELECT * FROM chooses WHERE id_book = " + tempId + " AND id_minuman = " + id_minuman + ";";
                 ResultSet existingData = db.getData(sql);
+                
+                sql = "SELECT `stokMinuman` FROM `drinks` WHERE namaMinuman = '" + selectedDataMakan + "';";
+                ResultSet rStok = db.getData(sql);
+                
+                while (rStok.next()) {
+                    stok_minuman = rs.getInt("stokMinuman");
+                }
 
                 if (existingData.next()) {
                     int existingJumlah = existingData.getInt("jumlah");
                     jumlah += existingJumlah;
 
+                    stok_minuman = stok_minuman + existingJumlah - jumlah;
                     sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_minuman = " + id_minuman + ";";
                     db.query(sql);
+                                     
+                    sql = "UPDATE `drinks` SET `stokMinuman` = `"+ stok_minuman +"` WHERE id = `"+ id_minuman +"`";
+                    db.query(sql);
+
                 } else {
                     sql = "INSERT INTO chooses (id_book, id_minuman, jumlah) VALUES (" + tempId + "," + id_minuman + "," + jumlah + ")";
                     db.query(sql);
+                    
+                    sql = "UPDATE `drinks` SET `stokMinuman` = `"+ jumlah +"` WHERE id = `"+ id_minuman +"`";
+                    db.query(sql);
                 }
 
+                db.close();
                 jTextField1.setText("");
                 this.loadDataPesanan();
+                this.loadDataMinum();
             } else {
                 JOptionPane.showMessageDialog(null, "Silahkan pilih minuman..", "Error system", JOptionPane.WARNING_MESSAGE);
             }
