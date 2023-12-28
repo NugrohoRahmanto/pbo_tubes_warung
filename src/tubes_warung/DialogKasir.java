@@ -812,6 +812,7 @@ public class DialogKasir extends javax.swing.JDialog {
         if (hasilDiskon < 0){
             JOptionPane.showMessageDialog(null,"Nominal pembayaran kurang..","Kasir",JOptionPane.WARNING_MESSAGE);
         }else{
+            String sql = "UPDATE `bookings` SET hargaTotal = `"+hasilDiskon+"` WHERE id = '"+ tempId +"'";
             
             JOptionPane.showMessageDialog(null,"Kembalian : "+hasilDiskon+"\nAnda telah menghemat : "+ selisih +"","Kasir",JOptionPane.WARNING_MESSAGE);
             this.dispose();
