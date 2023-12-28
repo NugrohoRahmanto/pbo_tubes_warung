@@ -4,8 +4,14 @@
  */
 package tubes_warung;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,17 +21,74 @@ public class AdminForm extends javax.swing.JDialog {
     private int idAdmin;
     private String roleAdmin;
     private Object selectedDataMakan, selectedDataMinum, selectedDataDiskon;
+    private ArrayList<Makanan> makan;
+    private ArrayList<Minuman> minum;
     /**
      * Creates new form AdminForm
      */
-    public AdminForm(java.awt.Frame parent, boolean modal) {
+    public AdminForm(java.awt.Frame parent, boolean modal) throws SQLException, ClassNotFoundException {
         super(parent, modal);
         initComponents();
+        loadDataMakan();
+        loadDataMinum();
     }
     
     public void setIdRoleLogin(int idAdmin, String role){
         this.idAdmin = idAdmin;
         this.roleAdmin = role;
+    }
+    
+    public final void loadDataMakan() throws SQLException, ClassNotFoundException{
+        Database db = new Database();
+        String cariMakan = "SELECT * FROM foods";
+        Database.rs = db.getData(cariMakan);
+        makan = new ArrayList<>();
+        
+        try{
+            while (Database.rs.next()){
+                makan.add(new Makanan(Database.rs.getInt(1), Database.rs.getString(5), Database.rs.getString(2), Database.rs.getInt(4), Database.rs.getInt(3)));
+
+            }
+            while (((DefaultTableModel)jTable1.getModel()).getRowCount()>0){
+                ((DefaultTableModel)jTable1.getModel()).removeRow(0);
+            }
+            for (int i=0; i<makan.size(); i++){
+                ((DefaultTableModel)jTable1.getModel()).addRow(new Object[]{
+                    makan.get(i).getNama(),
+                    makan.get(i).getHarga(),
+                    makan.get(i).getStok(),
+                    makan.get(i).getKategori()
+                });
+            }
+        }catch (SQLException err){
+            JOptionPane.showMessageDialog(null,""+err.getMessage(),"Connection Error",JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
+    public final void loadDataMinum() throws SQLException, ClassNotFoundException{
+        Database db = new Database();
+        String cariMinum = "SELECT * FROM drinks";
+        Database.rs = db.getData(cariMinum);
+        minum = new ArrayList<>();
+        
+        try{
+            while (Database.rs.next()){
+                minum.add(new Minuman(Database.rs.getInt(1), Database.rs.getString(2), Database.rs.getInt(4), Database.rs.getInt(3)));
+
+            }
+            while (((DefaultTableModel)jTable2.getModel()).getRowCount()>0){
+                ((DefaultTableModel)jTable2.getModel()).removeRow(0);
+            }
+            for (int i=0; i<minum.size(); i++){
+                ((DefaultTableModel)jTable2.getModel()).addRow(new Object[]{
+                    minum.get(i).getNama(),
+                    minum.get(i).getHarga(),
+                    minum.get(i).getStok(),
+                });
+            }
+        }catch (SQLException err){
+            JOptionPane.showMessageDialog(null,""+err.getMessage(),"Connection Error",JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     /**
@@ -95,6 +158,11 @@ public class AdminForm extends javax.swing.JDialog {
         jScrollPane1.setViewportView(jTable1);
 
         jButton2.setText("Tambah Makanan");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Ubah Makanan");
 
@@ -339,6 +407,20 @@ public class AdminForm extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jTable3MouseClicked
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        AddMakanan am;
+        try {
+            am = new AddMakanan(parentFrame, true);
+            am.setLocationRelativeTo(null);
+            am.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -369,7 +451,14 @@ public class AdminForm extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                AdminForm dialog = new AdminForm(new javax.swing.JFrame(), true);
+                AdminForm dialog = null;
+                try {
+                    dialog = new AdminForm(new javax.swing.JFrame(), true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
