@@ -143,6 +143,10 @@ public class AdminForm extends javax.swing.JDialog {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
@@ -221,13 +225,8 @@ public class AdminForm extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(48, 48, 48)
-                                        .addComponent(jLabel3))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(55, 55, 55)
-                                        .addComponent(jLabel2)))
+                                .addGap(55, 55, 55)
+                                .addComponent(jLabel2)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -241,7 +240,11 @@ public class AdminForm extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
                             .addComponent(jTextField2))
-                        .addGap(20, 20, 20))))
+                        .addGap(20, 20, 20))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(jLabel3)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -302,10 +305,29 @@ public class AdminForm extends javax.swing.JDialog {
         jScrollPane2.setViewportView(jTable2);
 
         jButton5.setText("Tambah Minuman");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Ubah Minuman");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setText("Hapus Minuman");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Harga");
+
+        jLabel5.setText("Stok");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -314,11 +336,28 @@ public class AdminForm extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(56, 56, 56)
+                                .addComponent(jLabel5))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(52, 52, 52)
+                                .addComponent(jLabel4)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -326,13 +365,21 @@ public class AdminForm extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton7))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton7)))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
@@ -487,11 +534,25 @@ public class AdminForm extends javax.swing.JDialog {
                 int hargaM = Integer.parseInt(jTextField1.getText());
                 int stokM = Integer.parseInt(jTextField2.getText());
                 
-                String sql = "UPDATE `foods` SET `hargaMakanan` = '" + hargaM + "', `stokMakanan` = '" + stokM + "' WHERE `namaMakanan` = '" + selectedMakan + "'";
-                db.query(sql);
+                if (jTextField1.getText().equals("")){
+                    String sql = "UPDATE `foods` SET `stokMakanan` = '" + stokM + "' WHERE `namaMakanan` = '" + selectedMakan + "'";
+                    db.query(sql);
+                    JOptionPane.showMessageDialog(null,"Data makanan berhasil diubah..","Admin Settings",JOptionPane.WARNING_MESSAGE);
+                }else if(jTextField2.getText().equals("")){
+                    String sql = "UPDATE `foods` SET `hargaMakanan` = '" + hargaM + "' WHERE `namaMakanan` = '" + selectedMakan + "'";
+                    db.query(sql);
+                    JOptionPane.showMessageDialog(null,"Data makanan berhasil diubah..","Admin Settings",JOptionPane.WARNING_MESSAGE);
+                }else if(jTextField1.getText().equals("") && jTextField2.getText().equals("")){
+                    JOptionPane.showMessageDialog(null,"Data ubah makanan belum dimasukan..","Admin Settings",JOptionPane.WARNING_MESSAGE);
+                }else{
+                    String sql = "UPDATE `foods` SET `hargaMakanan` = '" + hargaM + "', `stokMakanan` = '" + stokM + "' WHERE `namaMakanan` = '" + selectedMakan + "'";
+                    db.query(sql);
+                    JOptionPane.showMessageDialog(null,"Data makanan berhasil diubah..","Admin Settings",JOptionPane.WARNING_MESSAGE);
+                }
                 
-                JOptionPane.showMessageDialog(null,"Data makanan berhasil diubah..","Admin Settings",JOptionPane.WARNING_MESSAGE);
-                loadDataMakan();
+                jTextField1.setText("");
+                jTextField2.setText("");
+                loadDataMakan(); 
             }else{
                 JOptionPane.showMessageDialog(null,"silahkan pilih makanan..","Error system",JOptionPane.WARNING_MESSAGE);
             }
@@ -527,6 +588,82 @@ public class AdminForm extends javax.swing.JDialog {
         }
         
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        AddMinuman am;
+        try {
+            am = new AddMinuman(parentFrame, true);
+            am.setLocationRelativeTo(null);
+            am.setVisible(true);
+            loadDataMinum();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        try {
+            Database db = new Database();
+            if(selectedDataMinum != null){
+                String selectedMinum = selectedDataMinum.toString();
+                
+                String sql = "DELETE FROM `drinks` WHERE `namaMinuman` = '"+selectedMinum+"'";
+                db.query(sql);
+                
+                JOptionPane.showMessageDialog(null,"Minuman berhasil dihapus..","Admin Settings",JOptionPane.WARNING_MESSAGE);
+                loadDataMinum();
+            }else{
+                JOptionPane.showMessageDialog(null,"silahkan pilih minuman..","Error system",JOptionPane.WARNING_MESSAGE);
+            }
+            
+            db.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        try {
+            Database db = new Database();
+            if(selectedDataMinum != null){
+                String selectedMinum = selectedDataMinum.toString();
+                int hargaM = Integer.parseInt(jTextField3.getText());
+                int stokM = Integer.parseInt(jTextField4.getText());
+                
+                if (jTextField3.getText().equals("")){
+                    String sql = "UPDATE `drinks` SET `stokMinuman` = '" + stokM + "' WHERE `namaMinuman` = '" + selectedMinum + "'";
+                    db.query(sql);
+                    JOptionPane.showMessageDialog(null,"Data minuman berhasil diubah..","Admin Settings",JOptionPane.WARNING_MESSAGE);
+                }else if(jTextField4.getText().equals("")){
+                    String sql = "UPDATE `drinks` SET `hargaMinuman` = '" + hargaM + "' WHERE `namaMinuman` = '" + selectedMinum + "'";
+                    db.query(sql);
+                    JOptionPane.showMessageDialog(null,"Data minuman berhasil diubah..","Admin Settings",JOptionPane.WARNING_MESSAGE);
+                }else if(jTextField3.getText().equals("") && jTextField4.getText().equals("")){
+                    JOptionPane.showMessageDialog(null,"Data ubah minuman belum dimasukan..","Admin Settings",JOptionPane.WARNING_MESSAGE);
+                }else{
+                    String sql = "UPDATE `drinks` SET `hargaMinuman` = '" + hargaM + "', `stokMinuman` = '" + stokM + "' WHERE `namaMinuman` = '" + selectedMinum + "'";
+                    db.query(sql);
+                    JOptionPane.showMessageDialog(null,"Data minuman berhasil diubah..","Admin Settings",JOptionPane.WARNING_MESSAGE);
+                }
+                
+                jTextField3.setText("");
+                jTextField4.setText("");
+                loadDataMinum(); 
+            }else{
+                JOptionPane.showMessageDialog(null,"silahkan pilih minuman..","Error system",JOptionPane.WARNING_MESSAGE);
+            }
+            db.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -589,6 +726,8 @@ public class AdminForm extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -601,5 +740,7 @@ public class AdminForm extends javax.swing.JDialog {
     private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 }

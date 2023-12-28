@@ -167,6 +167,8 @@ public class AddMakanan extends javax.swing.JDialog {
             
             if (stokMakanan <= 0){
                 JOptionPane.showMessageDialog(null,"Stok yang anda masukkan tidak valid","Error Tambah Makanan",JOptionPane.WARNING_MESSAGE);
+            }else if(hargaMakanan <= 0){
+                JOptionPane.showMessageDialog(null,"Harga yang anda masukkan tidak valid","Error Tambah Makanan",JOptionPane.WARNING_MESSAGE);
             }else{
                 String sql = "INSERT INTO `foods`( `namaMakanan`, `stokMakanan`, `hargaMakanan`, `kategori`) VALUES ('"+ namaMakanan +"','"+ stokMakanan +"','"+ hargaMakanan +"','"+ selectedKategori +"')";
                 db.query(sql);
