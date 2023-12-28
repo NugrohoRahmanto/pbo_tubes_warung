@@ -10,18 +10,12 @@ package tubes_warung;
  * @author Nugee
  */
 public class Pesanan {
-    private int id;
     private String nama;
     private int hargaTotal;
 
-    public Pesanan(int id, String nama, int hargaTotal) {
-        this.id = id;
+    public Pesanan(String nama, int hargaTotal) {
         this.nama = nama;
         this.hargaTotal = hargaTotal;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getNama() {

@@ -41,7 +41,7 @@ public class Kasir extends javax.swing.JDialog {
         
     }
     
-    public void Refresh(){
+    public void Refresh() throws ClassNotFoundException{
         listMak.clear();
         listMin.clear();
         try {
@@ -235,6 +235,8 @@ public class Kasir extends javax.swing.JDialog {
             }              
         }catch (SQLException ex) {
             Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
@@ -242,6 +244,8 @@ public class Kasir extends javax.swing.JDialog {
             String sql = "insert into chooses (id_book, id_makanan, jumlah) values ('"+id_book_global+"','"+idMakanan+"','1000')";
             db.query(sql);
         } catch (SQLException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -258,10 +262,16 @@ public class Kasir extends javax.swing.JDialog {
             db.query(sql);
         } catch (SQLException ex) {
             Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         submitButton.setVisible(false);
-        this.Refresh();
+        try {
+            this.Refresh();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
         AddMakananButton.setVisible(true);
         AddMinumanButton.setVisible(true);
         BayarButton.setVisible(true);
@@ -274,6 +284,8 @@ public class Kasir extends javax.swing.JDialog {
                 id_book_global= rs.getInt("id");
             }              
         }catch (SQLException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_submitButtonActionPerformed
@@ -298,6 +310,8 @@ public class Kasir extends javax.swing.JDialog {
             }              
         }catch (SQLException ex) {
             Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
@@ -305,6 +319,8 @@ public class Kasir extends javax.swing.JDialog {
             String sql = "insert into chooses (id_book, id_minuman, jumlah) values ('"+id_book_global+"','"+idMinuman+"','1000')";
             db.query(sql);
         } catch (SQLException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
         }
         
