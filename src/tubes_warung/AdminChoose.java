@@ -147,7 +147,13 @@ public class AdminChoose extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         AdminForm ad = null;
-        ad = new AdminForm(parentFrame, true);
+        try {
+            ad = new AdminForm(parentFrame, true);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminChoose.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdminChoose.class.getName()).log(Level.SEVERE, null, ex);
+        }
         ad.setIdRoleLogin(idAdmin, roleAdmin);
         this.dispose();
         ad.setLocationRelativeTo(null);
