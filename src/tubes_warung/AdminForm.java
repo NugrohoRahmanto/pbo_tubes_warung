@@ -556,20 +556,21 @@ public class AdminForm extends javax.swing.JDialog {
             Database db = new Database();
             if(selectedDataMakan != null){
                 String selectedMakan = selectedDataMakan.toString();
-                int hargaM = Integer.parseInt(jTextField1.getText());
-                int stokM = Integer.parseInt(jTextField2.getText());
-                
                 if (jTextField1.getText().equals("")){
+                    int stokM = Integer.parseInt(jTextField2.getText());
                     String sql = "UPDATE `foods` SET `stokMakanan` = '" + stokM + "' WHERE `namaMakanan` = '" + selectedMakan + "'";
                     db.query(sql);
                     JOptionPane.showMessageDialog(null,"Data makanan berhasil diubah..","Admin Settings",JOptionPane.WARNING_MESSAGE);
                 }else if(jTextField2.getText().equals("")){
+                    int hargaM = Integer.parseInt(jTextField1.getText());
                     String sql = "UPDATE `foods` SET `hargaMakanan` = '" + hargaM + "' WHERE `namaMakanan` = '" + selectedMakan + "'";
                     db.query(sql);
                     JOptionPane.showMessageDialog(null,"Data makanan berhasil diubah..","Admin Settings",JOptionPane.WARNING_MESSAGE);
                 }else if(jTextField1.getText().equals("") && jTextField2.getText().equals("")){
                     JOptionPane.showMessageDialog(null,"Data ubah makanan belum dimasukan..","Admin Settings",JOptionPane.WARNING_MESSAGE);
                 }else{
+                    int hargaM = Integer.parseInt(jTextField1.getText());
+                    int stokM = Integer.parseInt(jTextField2.getText());
                     String sql = "UPDATE `foods` SET `hargaMakanan` = '" + hargaM + "', `stokMakanan` = '" + stokM + "' WHERE `namaMakanan` = '" + selectedMakan + "'";
                     db.query(sql);
                     JOptionPane.showMessageDialog(null,"Data makanan berhasil diubah..","Admin Settings",JOptionPane.WARNING_MESSAGE);
@@ -657,20 +658,22 @@ public class AdminForm extends javax.swing.JDialog {
             Database db = new Database();
             if(selectedDataMinum != null){
                 String selectedMinum = selectedDataMinum.toString();
-                int hargaM = Integer.parseInt(jTextField3.getText());
-                int stokM = Integer.parseInt(jTextField4.getText());
-                
+ 
                 if (jTextField3.getText().equals("")){
+                    int stokM = Integer.parseInt(jTextField4.getText());
                     String sql = "UPDATE `drinks` SET `stokMinuman` = '" + stokM + "' WHERE `namaMinuman` = '" + selectedMinum + "'";
                     db.query(sql);
                     JOptionPane.showMessageDialog(null,"Data minuman berhasil diubah..","Admin Settings",JOptionPane.WARNING_MESSAGE);
                 }else if(jTextField4.getText().equals("")){
+                    int hargaM = Integer.parseInt(jTextField3.getText());
                     String sql = "UPDATE `drinks` SET `hargaMinuman` = '" + hargaM + "' WHERE `namaMinuman` = '" + selectedMinum + "'";
                     db.query(sql);
                     JOptionPane.showMessageDialog(null,"Data minuman berhasil diubah..","Admin Settings",JOptionPane.WARNING_MESSAGE);
                 }else if(jTextField3.getText().equals("") && jTextField4.getText().equals("")){
                     JOptionPane.showMessageDialog(null,"Data ubah minuman belum dimasukan..","Admin Settings",JOptionPane.WARNING_MESSAGE);
                 }else{
+                    int hargaM = Integer.parseInt(jTextField3.getText());
+                    int stokM = Integer.parseInt(jTextField4.getText());
                     String sql = "UPDATE `drinks` SET `hargaMinuman` = '" + hargaM + "', `stokMinuman` = '" + stokM + "' WHERE `namaMinuman` = '" + selectedMinum + "'";
                     db.query(sql);
                     JOptionPane.showMessageDialog(null,"Data minuman berhasil diubah..","Admin Settings",JOptionPane.WARNING_MESSAGE);

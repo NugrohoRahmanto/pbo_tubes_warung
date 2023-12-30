@@ -105,9 +105,7 @@ public class DialogKasir extends javax.swing.JDialog {
                     makan.add(new Makanan(Database.rs.getInt(1), Database.rs.getString(5), Database.rs.getString(2), (int) (Database.rs.getInt(4)* diskonAppetizer), Database.rs.getInt(3)));
                 }else{
                     makan.add(new Makanan(Database.rs.getInt(1), Database.rs.getString(5), Database.rs.getString(2), (int) (Database.rs.getInt(4) * diskonMainCourse), Database.rs.getInt(3)));
-                }
-//                makan.add(new Makanan(Database.rs.getInt(1), Database.rs.getString(5), Database.rs.getString(2), Database.rs.getInt(4), Database.rs.getInt(3)));
-            
+                }            
 
             }
             while (((DefaultTableModel)jTable1.getModel()).getRowCount()>0){
@@ -594,35 +592,38 @@ public class DialogKasir extends javax.swing.JDialog {
                 }
                 
                 int jumlah = Integer.parseInt(jTextField2.getText());
+                
+                sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES (" + tempId + "," + id_makanan + "," + jumlah + ")";
+                db.query(sql);
 
-                sql = "SELECT * FROM chooses WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
-                ResultSet existingData = db.getData(sql);
-                
-                sql = "SELECT `stokMakanan` FROM `foods` WHERE namaMakanan = '" + selectedDataMakan + "';";
-                ResultSet rStok = db.getData(sql);
-                
-                while (rStok.next()) {
-                    stok_makanan = rs.getInt("stokMakanan");
-                }
-                
-                if (existingData.next()) {
-                    int existingJumlah = existingData.getInt("jumlah");
-                    jumlah += existingJumlah;
-                    
-                    stok_makanan = stok_makanan + existingJumlah - jumlah;
-                    sql = "UPDATE `foods` SET `stokMakanan` = `"+ stok_makanan +"` WHERE id = `"+ id_makanan +"`";
-                    db.query(sql);
-
-                    sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
-                    db.query(sql);
-                    
-                } else {
-                    sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES (" + tempId + "," + id_makanan + "," + jumlah + ")";
-                    db.query(sql);
-                    
-                    sql = "UPDATE `foods` SET `stokMakanan` = `"+ jumlah +"` WHERE id = `"+ id_makanan +"`";
-                    db.query(sql);
-                }
+//                sql = "SELECT * FROM chooses WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
+//                ResultSet existingData = db.getData(sql);
+//                
+//                sql = "SELECT `stokMakanan` FROM `foods` WHERE namaMakanan = '" + selectedDataMakan + "';";
+//                ResultSet rStok = db.getData(sql);
+//                
+//                while (rStok.next()) {
+//                    stok_makanan = rs.getInt("stokMakanan");
+//                }
+//                
+//                if (existingData.next()) {
+//                    int existingJumlah = existingData.getInt("jumlah");
+//                    jumlah += existingJumlah;
+//                    
+//                    stok_makanan = stok_makanan + existingJumlah - jumlah;
+//                    sql = "UPDATE `foods` SET `stokMakanan` = `"+ stok_makanan +"` WHERE id = `"+ id_makanan +"`";
+//                    db.query(sql);
+//
+//                    sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
+//                    db.query(sql);
+//                    
+//                } else {
+//                    sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES (" + tempId + "," + id_makanan + "," + jumlah + ")";
+//                    db.query(sql);
+//                    
+//                    sql = "UPDATE `foods` SET `stokMakanan` = `"+ jumlah +"` WHERE id = `"+ id_makanan +"`";
+//                    db.query(sql);
+//                }
 
                 db.close();
                 jTextField2.setText("");
@@ -848,7 +849,55 @@ public class DialogKasir extends javax.swing.JDialog {
         if (hasilDiskon < 0){
             JOptionPane.showMessageDialog(null,"Nominal pembayaran kurang..","Kasir",JOptionPane.WARNING_MESSAGE);
         }else{
-            String sql = "UPDATE `bookings` SET hargaTotal = `"+hasilDiskon+"` WHERE id = '"+ tempId +"'";
+            Database db = null;
+            String sql;
+            System.out.println(tempId);
+            
+            try {
+                db = new Database();
+                sql = "UPDATE `bookings` SET hargaTotal = "+totPembayaranDiskon+" WHERE id = "+ tempId +"";
+                System.out.println(sql);
+                db.query(sql);
+                sql = "SELECT chooses.id, chooses.id_book, chooses.id_makanan, chooses.id_minuman, " +
+                         "foods.namaMakanan AS nama_makanan, foods.hargaMakanan AS harga_makanan, foods.stokMakanan AS stok_makanan, " +
+                         "drinks.hargaMinuman AS harga_minuman, drinks.namaMinuman AS nama_minuman, drinks.stokMinuman AS stok_minuman," +
+                         "foods.kategori AS kategori, chooses.jumlah " +
+                         "FROM chooses " +
+                         "LEFT JOIN foods ON chooses.id_makanan = foods.id " +
+                         "LEFT JOIN drinks ON chooses.id_minuman = drinks.id " +
+                         "WHERE chooses.id_book = " + tempId + ";";
+
+                ResultSet rs = db.getData(sql);
+                while (rs.next()) {
+                    int idMakanan = rs.getInt("id_makanan");
+                    int idProduk, tempStok = 0;
+                    int hargaProduk, banyaknya;
+
+                    if (rs.wasNull() || idMakanan == 0) {
+                        idProduk = rs.getInt("id_minuman");
+                        tempStok = rs.getInt("stok_minuman");
+                        banyaknya = rs.getInt("jumlah");
+                        sql =  "UPDATE `drinks` SET stokMinuman = "+ (tempStok -banyaknya) +" WHERE id = '"+ idProduk +"'";
+                        System.out.println(sql);
+
+                    } else {
+                        idProduk = idMakanan;
+                        tempStok = rs.getInt("stok_makanan");
+                        banyaknya = rs.getInt("jumlah");
+                        sql =  "UPDATE `foods` SET stokMakanan = "+ (tempStok -banyaknya) +" WHERE id = '"+ idProduk +"'";
+                        System.out.println(sql);
+                    }
+                    db.query(sql);
+
+                }
+                db.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
             
             JOptionPane.showMessageDialog(null,"Kembalian : "+hasilDiskon+"\nAnda telah menghemat : "+ selisih +"","Kasir",JOptionPane.WARNING_MESSAGE);
             this.dispose();
