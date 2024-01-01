@@ -20,7 +20,8 @@ import javax.swing.SwingUtilities;
  * @author anand
  */
 public class DialogKasir extends javax.swing.JDialog {
-    public int totHargaPesanan;
+    public int totHargaPesananDiskon;
+    public int totHargaPesananAsli;
     public int deleteIdPesanan;
     public int editIdPesanan;
     public double diskonDesert;
@@ -46,7 +47,7 @@ public class DialogKasir extends javax.swing.JDialog {
      * @throws java.lang.ClassNotFoundException
      */
     
-    public void set_diskon() throws SQLException, ClassNotFoundException{
+    public final void set_diskon() throws SQLException, ClassNotFoundException{
         Database db = new Database();
         String cariDiskonDesert = "SELECT * FROM discounts where discounts.namaKategori = 'Desert'";
         String cariDiskonMainCourse = "SELECT * FROM discounts where discounts.namaKategori = 'MainCourse'";
@@ -54,25 +55,22 @@ public class DialogKasir extends javax.swing.JDialog {
         ResultSet rs1 = db.getData(cariDiskonDesert);
         ResultSet rs2 = db.getData(cariDiskonMainCourse);
         ResultSet rs3 = db.getData(cariDiskonAppetizer);
-        makan = new ArrayList<>();
         
         try{
             while (rs1.next()){
-                int diskon;
                 diskonDesert = (double) (100-rs1.getInt(3))/100;
             }
             while (rs2.next()){
-                int diskon;
                 diskonMainCourse = (double) (100-rs2.getInt(3))/100;
             }
             while (rs3.next()){
-                int diskon;
                 diskonAppetizer = (double) (100-rs3.getInt(3))/100;
             }
         }catch (SQLException err){
             JOptionPane.showMessageDialog(null,""+err.getMessage(),"Connection Error",JOptionPane.WARNING_MESSAGE);
         }
     }
+    
     public DialogKasir(java.awt.Frame parent, boolean modal) throws SQLException, ClassNotFoundException {
         super(parent, modal);
         initComponents();
@@ -107,9 +105,7 @@ public class DialogKasir extends javax.swing.JDialog {
                     makan.add(new Makanan(Database.rs.getInt(1), Database.rs.getString(5), Database.rs.getString(2), (int) (Database.rs.getInt(4)* diskonAppetizer), Database.rs.getInt(3)));
                 }else{
                     makan.add(new Makanan(Database.rs.getInt(1), Database.rs.getString(5), Database.rs.getString(2), (int) (Database.rs.getInt(4) * diskonMainCourse), Database.rs.getInt(3)));
-                }
-//                makan.add(new Makanan(Database.rs.getInt(1), Database.rs.getString(5), Database.rs.getString(2), Database.rs.getInt(4), Database.rs.getInt(3)));
-            
+                }            
 
             }
             while (((DefaultTableModel)jTable1.getModel()).getRowCount()>0){
@@ -157,7 +153,10 @@ public class DialogKasir extends javax.swing.JDialog {
     public final void loadDataPesanan() throws SQLException, ClassNotFoundException{
         try {
             Database db = new Database();
-            totHargaPesanan = 0;
+            int hargaAsli = 0;
+            boolean cekMinum = false;
+            totHargaPesananDiskon = 0;
+            totHargaPesananAsli = 0;
             String sql = "SELECT chooses.id, chooses.id_book, chooses.id_makanan, chooses.id_minuman, " +
                          "foods.namaMakanan AS nama_makanan, foods.hargaMakanan AS harga_makanan, " +
                          "drinks.hargaMinuman AS harga_minuman, drinks.namaMinuman AS nama_minuman, " +
@@ -176,29 +175,33 @@ public class DialogKasir extends javax.swing.JDialog {
                 String namaProduk,kategori;
                 int hargaProduk, banyaknya;
 
-                if (rs.wasNull() || idMakanan == 0) {
+                if ((rs.wasNull() || idMakanan == 0) && cekMinum == false) {
                     namaProduk = rs.getString("nama_minuman");
+                    hargaAsli = rs.getInt("harga_minuman");
                     hargaProduk = rs.getInt("harga_minuman");
                 } else {
                     namaProduk = rs.getString("nama_makanan");
                     kategori = rs.getString("kategori");
-                    if(kategori.equals("Desert")){
+                    hargaAsli = rs.getInt("harga_makanan");
+                    if (kategori.equals("Desert")){
                         hargaProduk = (int) (rs.getInt("harga_makanan") * diskonDesert);
                     }else if(kategori.equals("Appetizer")){
                         hargaProduk = (int) (rs.getInt("harga_makanan")* diskonAppetizer);
                     }else{
                         hargaProduk = (int) (rs.getInt("harga_makanan")* diskonMainCourse);
                     }
-//                    hargaProduk = rs.getInt("harga_makanan");
                 }
 
                 banyaknya = rs.getInt("jumlah");
-                int jumlahHarga = hargaProduk * banyaknya;
-                totHargaPesanan += jumlahHarga;
-                model.addRow(new Object[]{namaProduk, hargaProduk, banyaknya, jumlahHarga});
+                int jumlahHargaAsli = hargaAsli * banyaknya;
+                int jumlahHargaDiskon = hargaProduk * banyaknya;
+                totHargaPesananDiskon += jumlahHargaDiskon;
+                totHargaPesananAsli += jumlahHargaAsli;
+                model.addRow(new Object[]{namaProduk, hargaProduk, banyaknya, jumlahHargaDiskon});
             }
 
-            jLabel9.setText(""+totHargaPesanan+"");
+            jLabel9.setText(""+totHargaPesananAsli+"");
+            jLabel13.setText(""+totHargaPesananDiskon+"");
             db.close();
 
         } catch (SQLException | ClassNotFoundException ex) {
@@ -245,6 +248,8 @@ public class DialogKasir extends javax.swing.JDialog {
         jLabel11 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -427,6 +432,8 @@ public class DialogKasir extends javax.swing.JDialog {
             }
         });
 
+        jLabel12.setText("TOTAL HARGA  SETELAH DISKON :");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -460,7 +467,9 @@ public class DialogKasir extends javax.swing.JDialog {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(14, 14, 14)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel13))
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -531,7 +540,11 @@ public class DialogKasir extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
                             .addComponent(jLabel9))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -570,6 +583,7 @@ public class DialogKasir extends javax.swing.JDialog {
             Database db = new Database();
             if (selectedDataMakan != null){
                 int id_makanan = 0;
+                int stok_makanan = 0;
                 String sql = "SELECT `id` FROM `foods` WHERE namaMakanan = '" + selectedDataMakan + "';";
                 ResultSet rs = db.getData(sql);
 
@@ -578,23 +592,43 @@ public class DialogKasir extends javax.swing.JDialog {
                 }
                 
                 int jumlah = Integer.parseInt(jTextField2.getText());
-
-                sql = "SELECT * FROM chooses WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
-                ResultSet existingData = db.getData(sql);
                 
-                if (existingData.next()) {
-                    int existingJumlah = existingData.getInt("jumlah");
-                    jumlah += existingJumlah;
+                sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES (" + tempId + "," + id_makanan + "," + jumlah + ")";
+                db.query(sql);
 
-                    sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
-                    db.query(sql);
-                } else {
-                    sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES (" + tempId + "," + id_makanan + "," + jumlah + ")";
-                    db.query(sql);
-                }
+//                sql = "SELECT * FROM chooses WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
+//                ResultSet existingData = db.getData(sql);
+//                
+//                sql = "SELECT `stokMakanan` FROM `foods` WHERE namaMakanan = '" + selectedDataMakan + "';";
+//                ResultSet rStok = db.getData(sql);
+//                
+//                while (rStok.next()) {
+//                    stok_makanan = rs.getInt("stokMakanan");
+//                }
+//                
+//                if (existingData.next()) {
+//                    int existingJumlah = existingData.getInt("jumlah");
+//                    jumlah += existingJumlah;
+//                    
+//                    stok_makanan = stok_makanan + existingJumlah - jumlah;
+//                    sql = "UPDATE `foods` SET `stokMakanan` = `"+ stok_makanan +"` WHERE id = `"+ id_makanan +"`";
+//                    db.query(sql);
+//
+//                    sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
+//                    db.query(sql);
+//                    
+//                } else {
+//                    sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES (" + tempId + "," + id_makanan + "," + jumlah + ")";
+//                    db.query(sql);
+//                    
+//                    sql = "UPDATE `foods` SET `stokMakanan` = `"+ jumlah +"` WHERE id = `"+ id_makanan +"`";
+//                    db.query(sql);
+//                }
 
+                db.close();
                 jTextField2.setText("");
                 this.loadDataPesanan();
+                this.loadDataMakan();
             }else{
                 JOptionPane.showMessageDialog(null,"silahkan pilih makanan..","Error system",JOptionPane.WARNING_MESSAGE);
             }
@@ -611,6 +645,7 @@ public class DialogKasir extends javax.swing.JDialog {
             Database db = new Database();
             if (selectedDataMinum != null) {
                 int id_minuman = 0;
+                int stok_minuman = 0;
                 String sql = "SELECT `id` FROM `drinks` WHERE namaMinuman = '" + selectedDataMinum + "';";
                 ResultSet rs = db.getData(sql);
 
@@ -622,20 +657,37 @@ public class DialogKasir extends javax.swing.JDialog {
 
                 sql = "SELECT * FROM chooses WHERE id_book = " + tempId + " AND id_minuman = " + id_minuman + ";";
                 ResultSet existingData = db.getData(sql);
+                
+                sql = "SELECT `stokMinuman` FROM `drinks` WHERE namaMinuman = '" + selectedDataMakan + "';";
+                ResultSet rStok = db.getData(sql);
+                
+                while (rStok.next()) {
+                    stok_minuman = rs.getInt("stokMinuman");
+                }
 
                 if (existingData.next()) {
                     int existingJumlah = existingData.getInt("jumlah");
                     jumlah += existingJumlah;
 
+                    stok_minuman = stok_minuman + existingJumlah - jumlah;
                     sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_minuman = " + id_minuman + ";";
                     db.query(sql);
+                                     
+                    sql = "UPDATE `drinks` SET `stokMinuman` = `"+ stok_minuman +"` WHERE id = `"+ id_minuman +"`";
+                    db.query(sql);
+
                 } else {
                     sql = "INSERT INTO chooses (id_book, id_minuman, jumlah) VALUES (" + tempId + "," + id_minuman + "," + jumlah + ")";
                     db.query(sql);
+                    
+                    sql = "UPDATE `drinks` SET `stokMinuman` = `"+ jumlah +"` WHERE id = `"+ id_minuman +"`";
+                    db.query(sql);
                 }
 
+                db.close();
                 jTextField1.setText("");
                 this.loadDataPesanan();
+                this.loadDataMinum();
             } else {
                 JOptionPane.showMessageDialog(null, "Silahkan pilih minuman..", "Error system", JOptionPane.WARNING_MESSAGE);
             }
@@ -789,17 +841,65 @@ public class DialogKasir extends javax.swing.JDialog {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int nominalBayar = Integer.parseInt(jTextField3.getText());
-        int totPembayaran = Integer.parseInt(jLabel9.getText());
+        int totPembayaranAsli = Integer.parseInt(jLabel9.getText());
+        int totPembayaranDiskon = Integer.parseInt(jLabel13.getText());
         
-        int hasil = nominalBayar - totPembayaran;
-        if (hasil < 0){
+        int hasilDiskon = nominalBayar - totPembayaranDiskon;
+        int selisih = totPembayaranAsli - totPembayaranDiskon;
+        if (hasilDiskon < 0){
             JOptionPane.showMessageDialog(null,"Nominal pembayaran kurang..","Kasir",JOptionPane.WARNING_MESSAGE);
         }else{
-//            Database db = null;
-//            String sql = "UPDATE bookings SET hargaTotal = "+totPembayaran+" WHERE id = "+tempId+"";
-//            db.query(sql);
+            Database db = null;
+            String sql;
+            System.out.println(tempId);
             
-            JOptionPane.showMessageDialog(null,"Kembalian : "+hasil+"","Kasir",JOptionPane.WARNING_MESSAGE);
+            try {
+                db = new Database();
+                sql = "UPDATE `bookings` SET hargaTotal = "+totPembayaranDiskon+" WHERE id = "+ tempId +"";
+                System.out.println(sql);
+                db.query(sql);
+                sql = "SELECT chooses.id, chooses.id_book, chooses.id_makanan, chooses.id_minuman, " +
+                         "foods.namaMakanan AS nama_makanan, foods.hargaMakanan AS harga_makanan, foods.stokMakanan AS stok_makanan, " +
+                         "drinks.hargaMinuman AS harga_minuman, drinks.namaMinuman AS nama_minuman, drinks.stokMinuman AS stok_minuman," +
+                         "foods.kategori AS kategori, chooses.jumlah " +
+                         "FROM chooses " +
+                         "LEFT JOIN foods ON chooses.id_makanan = foods.id " +
+                         "LEFT JOIN drinks ON chooses.id_minuman = drinks.id " +
+                         "WHERE chooses.id_book = " + tempId + ";";
+
+                ResultSet rs = db.getData(sql);
+                while (rs.next()) {
+                    int idMakanan = rs.getInt("id_makanan");
+                    int idProduk, tempStok = 0;
+                    int hargaProduk, banyaknya;
+
+                    if (rs.wasNull() || idMakanan == 0) {
+                        idProduk = rs.getInt("id_minuman");
+                        tempStok = rs.getInt("stok_minuman");
+                        banyaknya = rs.getInt("jumlah");
+                        sql =  "UPDATE `drinks` SET stokMinuman = "+ (tempStok -banyaknya) +" WHERE id = '"+ idProduk +"'";
+                        System.out.println(sql);
+
+                    } else {
+                        idProduk = idMakanan;
+                        tempStok = rs.getInt("stok_makanan");
+                        banyaknya = rs.getInt("jumlah");
+                        sql =  "UPDATE `foods` SET stokMakanan = "+ (tempStok -banyaknya) +" WHERE id = '"+ idProduk +"'";
+                        System.out.println(sql);
+                    }
+                    db.query(sql);
+
+                }
+                db.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            
+            JOptionPane.showMessageDialog(null,"Kembalian : "+hasilDiskon+"\nAnda telah menghemat : "+ selisih +"","Kasir",JOptionPane.WARNING_MESSAGE);
             this.dispose();
             
             JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -893,6 +993,8 @@ public class DialogKasir extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
