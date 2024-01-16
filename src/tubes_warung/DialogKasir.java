@@ -108,11 +108,11 @@ public class DialogKasir extends javax.swing.JDialog {
                 }            
 
             }
-            while (((DefaultTableModel)jTable1.getModel()).getRowCount()>0){
-                ((DefaultTableModel)jTable1.getModel()).removeRow(0);
+            while (((DefaultTableModel)TabelMakanan.getModel()).getRowCount()>0){
+                ((DefaultTableModel)TabelMakanan.getModel()).removeRow(0);
             }
             for (int i=0; i<makan.size(); i++){
-                ((DefaultTableModel)jTable1.getModel()).addRow(new Object[]{
+                ((DefaultTableModel)TabelMakanan.getModel()).addRow(new Object[]{
                     makan.get(i).getNama(),
                     makan.get(i).getHarga(),
                     makan.get(i).getStok(),
@@ -135,11 +135,11 @@ public class DialogKasir extends javax.swing.JDialog {
                 minum.add(new Minuman(Database.rs.getInt(1), Database.rs.getString(2), Database.rs.getInt(4), Database.rs.getInt(3)));
 
             }
-            while (((DefaultTableModel)jTable2.getModel()).getRowCount()>0){
-                ((DefaultTableModel)jTable2.getModel()).removeRow(0);
+            while (((DefaultTableModel)TabelMinuman.getModel()).getRowCount()>0){
+                ((DefaultTableModel)TabelMinuman.getModel()).removeRow(0);
             }
             for (int i=0; i<minum.size(); i++){
-                ((DefaultTableModel)jTable2.getModel()).addRow(new Object[]{
+                ((DefaultTableModel)TabelMinuman.getModel()).addRow(new Object[]{
                     minum.get(i).getNama(),
                     minum.get(i).getHarga(),
                     minum.get(i).getStok(),
@@ -167,7 +167,7 @@ public class DialogKasir extends javax.swing.JDialog {
                          "WHERE chooses.id_book = " + tempId + ";";
 
             ResultSet rs = db.getData(sql);
-            DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+            DefaultTableModel model = (DefaultTableModel) TabelPesanan.getModel();
             model.setRowCount(0);
 
             while (rs.next()) {
@@ -223,27 +223,27 @@ public class DialogKasir extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TabelMakanan = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        TabelMinuman = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        TambahMinumanButton = new javax.swing.JButton();
+        TambahMakananButton = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
+        TabelPesanan = new javax.swing.JTable();
+        BayarButton = new javax.swing.JButton();
         jTextField3 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        SubmitNameCustButton = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        EDIT = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        EditButton = new javax.swing.JButton();
+        DeleteButton = new javax.swing.JButton();
         jTextField5 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -259,7 +259,7 @@ public class DialogKasir extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Sitka Text", 1, 14)); // NOI18N
         jLabel2.setText("LIST MINUMAN");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TabelMakanan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -285,14 +285,14 @@ public class DialogKasir extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        TabelMakanan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                TabelMakananMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TabelMakanan);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        TabelMinuman.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -318,29 +318,29 @@ public class DialogKasir extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+        TabelMinuman.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable2MouseClicked(evt);
+                TabelMinumanMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(TabelMinuman);
 
         jLabel3.setFont(new java.awt.Font("Sitka Text", 1, 24)); // NOI18N
         jLabel3.setText("KASIR");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        jButton1.setText("Tambah Minuman");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        TambahMinumanButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        TambahMinumanButton.setText("Tambah Minuman");
+        TambahMinumanButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                TambahMinumanButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        jButton2.setText("Tambah Makanan");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        TambahMakananButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        TambahMakananButton.setText("Tambah Makanan");
+        TambahMakananButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                TambahMakananButtonActionPerformed(evt);
             }
         });
 
@@ -350,7 +350,7 @@ public class DialogKasir extends javax.swing.JDialog {
         jLabel5.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel5.setText("Banyaknya :");
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        TabelPesanan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -376,43 +376,49 @@ public class DialogKasir extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+        TabelPesanan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable3MouseClicked(evt);
+                TabelPesananMouseClicked(evt);
             }
         });
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(TabelPesanan);
 
-        jButton3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButton3.setText("BAYAR");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        BayarButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        BayarButton.setText("BAYAR");
+        BayarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                BayarButtonActionPerformed(evt);
             }
         });
 
         jLabel6.setText("NAMA                  :");
 
-        jButton4.setText("OK");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jTextField4ActionPerformed(evt);
+            }
+        });
+
+        SubmitNameCustButton.setText("OK");
+        SubmitNameCustButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SubmitNameCustButtonActionPerformed(evt);
             }
         });
 
         jLabel7.setText("TOTAL HARGA  :");
 
-        EDIT.setText("EDIT");
-        EDIT.addActionListener(new java.awt.event.ActionListener() {
+        EditButton.setText("EDIT");
+        EditButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EDITActionPerformed(evt);
+                EditButtonActionPerformed(evt);
             }
         });
 
-        jButton6.setText("DELETE");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        DeleteButton.setText("DELETE");
+        DeleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                DeleteButtonActionPerformed(evt);
             }
         });
 
@@ -450,20 +456,20 @@ public class DialogKasir extends javax.swing.JDialog {
                                         .addComponent(jLabel11)
                                         .addGap(0, 0, Short.MAX_VALUE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(EDIT, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(EditButton, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(DeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BayarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField3)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(SubmitNameCustButton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(14, 14, 14)
@@ -477,9 +483,9 @@ public class DialogKasir extends javax.swing.JDialog {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel10)
                                     .addComponent(jLabel8))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(94, 94, 94)
                                 .addComponent(jLabel1)
-                                .addGap(102, 102, 102)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel3))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
@@ -487,22 +493,22 @@ public class DialogKasir extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextField2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(TambahMakananButton, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel4)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jTextField1)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(TambahMinumanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap())
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addGap(79, 79, 79))))))
+                                .addGap(118, 118, 118))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -527,15 +533,15 @@ public class DialogKasir extends javax.swing.JDialog {
                     .addComponent(jLabel4)
                     .addComponent(jLabel5)
                     .addComponent(jTextField2)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TambahMakananButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TambahMinumanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
                             .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4))
+                            .addComponent(SubmitNameCustButton))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
@@ -558,9 +564,9 @@ public class DialogKasir extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(5, 5, 5)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(EDIT, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(DeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(EditButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BayarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
@@ -578,7 +584,7 @@ public class DialogKasir extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void TambahMakananButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TambahMakananButtonActionPerformed
         try {
             Database db = new Database();
             if (selectedDataMakan != null){
@@ -586,6 +592,8 @@ public class DialogKasir extends javax.swing.JDialog {
                 int stok_makanan = 0;
                 String sql = "SELECT `id` FROM `foods` WHERE namaMakanan = '" + selectedDataMakan + "';";
                 ResultSet rs = db.getData(sql);
+                
+                System.out.println(selectedDataMakan);
 
                 while (rs.next()) {
                     id_makanan = rs.getInt("id");
@@ -593,37 +601,45 @@ public class DialogKasir extends javax.swing.JDialog {
                 
                 int jumlah = Integer.parseInt(jTextField2.getText());
                 
-                sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES (" + tempId + "," + id_makanan + "," + jumlah + ")";
-                db.query(sql);
+//                sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES (" + tempId + "," + id_makanan + "," + jumlah + ")";
+//                db.query(sql);
 
-//                sql = "SELECT * FROM chooses WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
-//                ResultSet existingData = db.getData(sql);
-//                
-//                sql = "SELECT `stokMakanan` FROM `foods` WHERE namaMakanan = '" + selectedDataMakan + "';";
-//                ResultSet rStok = db.getData(sql);
-//                
-//                while (rStok.next()) {
-//                    stok_makanan = rs.getInt("stokMakanan");
-//                }
-//                
-//                if (existingData.next()) {
-//                    int existingJumlah = existingData.getInt("jumlah");
-//                    jumlah += existingJumlah;
-//                    
-//                    stok_makanan = stok_makanan + existingJumlah - jumlah;
-//                    sql = "UPDATE `foods` SET `stokMakanan` = `"+ stok_makanan +"` WHERE id = `"+ id_makanan +"`";
+                sql = "SELECT * FROM chooses WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
+                ResultSet existingData = db.getData(sql);
+                
+                sql = "SELECT `stokMakanan` FROM `foods` WHERE namaMakanan = '" + selectedDataMakan + "';";
+                ResultSet rStok = db.getData(sql);
+                while (rStok.next()) {
+                    stok_makanan = rStok.getInt("stokMakanan");
+                }
+
+                if (existingData.next()) {
+                    int existingJumlah = existingData.getInt("jumlah");
+                    jumlah += existingJumlah;
+                    if(jumlah <= stok_makanan){
+                       sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
+                        db.query(sql);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Stok tidak cukup!!!", "Error system", JOptionPane.WARNING_MESSAGE);
+                    }
+                    
+//                    sql = "UPDATE `foods` SET `stokMakanan` = "+ stok_makanan +" WHERE id = "+ id_makanan +"";
 //                    db.query(sql);
-//
-//                    sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_makanan = " + id_makanan + ";";
+
+                    
+                    
+                } else {
+                    if(jumlah <= stok_makanan){
+                       sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES (" + tempId + "," + id_makanan + "," + jumlah + ")";
+                        db.query(sql);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Stok tidak cukup!!!", "Error system", JOptionPane.WARNING_MESSAGE);
+                    }
+                    
+                    
+//                    sql = "UPDATE `foods` SET `stokMakanan` = "+ jumlah +" WHERE id = "+ id_makanan +"";
 //                    db.query(sql);
-//                    
-//                } else {
-//                    sql = "INSERT INTO chooses (id_book, id_makanan, jumlah) VALUES (" + tempId + "," + id_makanan + "," + jumlah + ")";
-//                    db.query(sql);
-//                    
-//                    sql = "UPDATE `foods` SET `stokMakanan` = `"+ jumlah +"` WHERE id = `"+ id_makanan +"`";
-//                    db.query(sql);
-//                }
+                }
 
                 db.close();
                 jTextField2.setText("");
@@ -638,9 +654,9 @@ public class DialogKasir extends javax.swing.JDialog {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
         }  
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_TambahMakananButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void TambahMinumanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TambahMinumanButtonActionPerformed
         try {
             Database db = new Database();
             if (selectedDataMinum != null) {
@@ -664,24 +680,34 @@ public class DialogKasir extends javax.swing.JDialog {
                 while (rStok.next()) {
                     stok_minuman = rs.getInt("stokMinuman");
                 }
-
+                
                 if (existingData.next()) {
                     int existingJumlah = existingData.getInt("jumlah");
                     jumlah += existingJumlah;
+                    if(jumlah <= stok_minuman){
+                        stok_minuman = stok_minuman + existingJumlah - jumlah;
+                        sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_minuman = " + id_minuman + ";";
+                        db.query(sql); 
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Stok tidak cukup!!!", "Error system", JOptionPane.WARNING_MESSAGE);
+                    }
 
-                    stok_minuman = stok_minuman + existingJumlah - jumlah;
-                    sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_minuman = " + id_minuman + ";";
-                    db.query(sql);
+                    
                                      
-                    sql = "UPDATE `drinks` SET `stokMinuman` = `"+ stok_minuman +"` WHERE id = `"+ id_minuman +"`";
-                    db.query(sql);
+//                    sql = "UPDATE `drinks` SET `stokMinuman` = `"+ stok_minuman +"` WHERE id = `"+ id_minuman +"`";
+//                    db.query(sql);
 
                 } else {
-                    sql = "INSERT INTO chooses (id_book, id_minuman, jumlah) VALUES (" + tempId + "," + id_minuman + "," + jumlah + ")";
-                    db.query(sql);
+                    if(jumlah <= stok_minuman){
+                        sql = "INSERT INTO chooses (id_book, id_minuman, jumlah) VALUES (" + tempId + "," + id_minuman + "," + jumlah + ")";
+                        db.query(sql);; 
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Stok tidak cukup!!!", "Error system", JOptionPane.WARNING_MESSAGE);
+                    }
                     
-                    sql = "UPDATE `drinks` SET `stokMinuman` = `"+ jumlah +"` WHERE id = `"+ id_minuman +"`";
-                    db.query(sql);
+                    
+//                    sql = "UPDATE `drinks` SET `stokMinuman` = `"+ jumlah +"` WHERE id = `"+ id_minuman +"`";
+//                    db.query(sql);
                 }
 
                 db.close();
@@ -697,25 +723,25 @@ public class DialogKasir extends javax.swing.JDialog {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_TambahMinumanButtonActionPerformed
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        int selectedMakan = jTable1.getSelectedRow();
+    private void TabelMakananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelMakananMouseClicked
+        int selectedMakan = TabelMakanan.getSelectedRow();
         if (selectedMakan != -1) {
-            selectedDataMakan = jTable1.getValueAt(selectedMakan,0);
+            selectedDataMakan = TabelMakanan.getValueAt(selectedMakan,0);
             System.out.println("Selected Makan: " + selectedDataMakan);
         }
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_TabelMakananMouseClicked
 
-    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        int selectedMinum = jTable2.getSelectedRow();
+    private void TabelMinumanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelMinumanMouseClicked
+        int selectedMinum = TabelMinuman.getSelectedRow();
         if (selectedMinum != -1){
-            selectedDataMinum = jTable2.getValueAt(selectedMinum, 0);
+            selectedDataMinum = TabelMinuman.getValueAt(selectedMinum, 0);
             System.out.println("Selected Minum: " + selectedDataMinum);
         }
-    }//GEN-LAST:event_jTable2MouseClicked
+    }//GEN-LAST:event_TabelMinumanMouseClicked
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void SubmitNameCustButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitNameCustButtonActionPerformed
         try {
             Database db = new Database();
             String namaPemesan = jTextField4.getText();
@@ -738,17 +764,17 @@ public class DialogKasir extends javax.swing.JDialog {
             Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_SubmitNameCustButtonActionPerformed
 
-    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
-        int selectedPesanan = jTable3.getSelectedRow();
+    private void TabelPesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelPesananMouseClicked
+        int selectedPesanan = TabelPesanan.getSelectedRow();
         if (selectedPesanan != -1){
-            selectedDataPesanan = jTable3.getValueAt(selectedPesanan, 0);
+            selectedDataPesanan = TabelPesanan.getValueAt(selectedPesanan, 0);
             System.out.println("Selected Pesan: " + selectedDataPesanan);
         }
-    }//GEN-LAST:event_jTable3MouseClicked
+    }//GEN-LAST:event_TabelPesananMouseClicked
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
         try {
             Database db = new Database();
             int idMakan = 0, idMinum = 0;
@@ -787,12 +813,14 @@ public class DialogKasir extends javax.swing.JDialog {
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_DeleteButtonActionPerformed
 
-    private void EDITActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EDITActionPerformed
+    private void EditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditButtonActionPerformed
         try {
             Database db = new Database();
             int idMakan = 0, idMinum = 0;
+            int stok_makanan = 0, stok_minuman = 0;
+            
             
             int jumlah = Integer.parseInt(jTextField5.getText());
             
@@ -800,28 +828,40 @@ public class DialogKasir extends javax.swing.JDialog {
                 
                 String selectedDataPesan = selectedDataPesanan.toString();
 
-                String sql1 = "SELECT `id` FROM `foods` WHERE namaMakanan = '"+selectedDataPesan+"'";
+                String sql1 = "SELECT `id`, `stokMakanan` FROM `foods` WHERE namaMakanan = '"+selectedDataPesan+"'";
                 ResultSet rs1 = db.getData(sql1);
 
-                String sql2 = "SELECT `id` FROM `drinks` WHERE namaMinuman = '"+selectedDataPesan+"';";
+                String sql2 = "SELECT `id`, `stokMinuman` FROM `drinks` WHERE namaMinuman = '"+selectedDataPesan+"';";
                 ResultSet rs2 = db.getData(sql2);
 
                 while(rs1.next()){
                     idMakan= rs1.getInt("id");
+                    stok_makanan = rs1.getInt("stokMakanan");
                 }
 
                 while(rs2.next()){
                     idMinum= rs2.getInt("id");
+                    stok_minuman = rs2.getInt("stokMinuman");
                 }
 
                 if(idMakan == 0){
                     editIdPesanan = idMinum;
-                    String sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_minuman = " + editIdPesanan + "";
-                    db.query(sql);
+                    if(jumlah <= stok_minuman){
+                        String sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_minuman = " + editIdPesanan + "";
+                        db.query(sql);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Stok tidak cukup!!!", "Error system", JOptionPane.WARNING_MESSAGE);
+                    }
+                    
                 }else{
                     editIdPesanan = idMakan;
-                    String sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_makanan = " + editIdPesanan + "";
-                    db.query(sql);
+                    if(jumlah <= stok_makanan){
+                        String sql = "UPDATE chooses SET jumlah = " + jumlah + " WHERE id_book = " + tempId + " AND id_makanan = " + editIdPesanan + "";
+                        db.query(sql);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Stok tidak cukup!!!", "Error system", JOptionPane.WARNING_MESSAGE);
+                    }
+                   
                 }
 
                 rs1.close();
@@ -837,9 +877,9 @@ public class DialogKasir extends javax.swing.JDialog {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DialogKasir.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_EDITActionPerformed
+    }//GEN-LAST:event_EditButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void BayarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BayarButtonActionPerformed
         int nominalBayar = Integer.parseInt(jTextField3.getText());
         int totPembayaranAsli = Integer.parseInt(jLabel9.getText());
         int totPembayaranDiskon = Integer.parseInt(jLabel13.getText());
@@ -915,7 +955,7 @@ public class DialogKasir extends javax.swing.JDialog {
             newK.setLocationRelativeTo(null);
             newK.setVisible(true);
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_BayarButtonActionPerformed
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         this.dispose();
@@ -935,6 +975,10 @@ public class DialogKasir extends javax.swing.JDialog {
         login.setLocationRelativeTo(null);
         login.setVisible(true);
     }//GEN-LAST:event_jLabel10MouseClicked
+
+    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -984,12 +1028,15 @@ public class DialogKasir extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton EDIT;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton BayarButton;
+    private javax.swing.JButton DeleteButton;
+    private javax.swing.JButton EditButton;
+    private javax.swing.JButton SubmitNameCustButton;
+    private javax.swing.JTable TabelMakanan;
+    private javax.swing.JTable TabelMinuman;
+    private javax.swing.JTable TabelPesanan;
+    private javax.swing.JButton TambahMakananButton;
+    private javax.swing.JButton TambahMinumanButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1007,9 +1054,6 @@ public class DialogKasir extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
